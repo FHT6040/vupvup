@@ -187,8 +187,8 @@ class VupVup_QA_Frontend {
             'isLoggedIn'   => $is_logged_in,
             'guestName'    => $guest_name,
             'speakers'     => $speakers,
-            'loginUrl'     => home_url( 'vupvup/login/' ),
-            'registerUrl'  => home_url( 'vupvup/register/' ),
+            'loginUrl'     => home_url( 'login/' ),
+            'registerUrl'  => home_url( 'register/' ),
             'i18n'         => [
                 'submit'          => __( 'Send spørgsmål', 'vupvup-qa' ),
                 'submitting'      => __( 'Sender…', 'vupvup-qa' ),
