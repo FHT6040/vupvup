@@ -25,7 +25,7 @@
             <h1><?php echo esc_html( $event->post_title ); ?></h1>
         </div>
         <div class="vupvup-event-controls">
-            <a href="<?php echo esc_url( home_url( 'vupvup/dashboard/event/' . $event_id . '/rediger/' ) ); ?>"
+            <a href="<?php echo esc_url( home_url( 'dashboard/event/' . $event_id . '/rediger/' ) ); ?>"
                class="vupvup-btn vupvup-btn-ghost vupvup-btn-sm">
                 <?php esc_html_e( 'Rediger', 'vupvup-qa' ); ?>
             </a>
