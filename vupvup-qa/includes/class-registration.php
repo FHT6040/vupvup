@@ -73,12 +73,12 @@ class VupVup_QA_Registration {
         update_user_meta( $user_id, 'vupvup_plan', 'free' );
         update_user_meta( $user_id, 'vupvup_plan_since', current_time( 'mysql' ) );
 
-        // Log the user in.
+        // Log the user in immediately — no waiting for email verification.
         wp_set_current_user( $user_id );
         wp_set_auth_cookie( $user_id, true );
 
-        // Send welcome email.
-        self::send_welcome_email( $user_id );
+        // Send verification email in the background (non-blocking).
+        self::send_verification_email( $user_id );
 
         return new WP_REST_Response( [
             'success'      => true,
