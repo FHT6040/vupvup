@@ -46,7 +46,10 @@ class VupVup_QA_Frontend {
         $page  = get_query_var( 'vupvup_page' );
         $token = get_query_var( 'vupvup_event_token' );
 
-        if ( $token ) { $this->render_qa_landing( sanitize_text_field( $token ) ); exit; }
+        if ( $token ) {
+            if ( $page === 'bigscreen' ) { $this->render_bigscreen( sanitize_text_field( $token ) ); exit; }
+            $this->render_qa_landing( sanitize_text_field( $token ) ); exit;
+        }
 
         if ( ! $page ) return;
 
