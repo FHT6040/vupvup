@@ -32,7 +32,7 @@
             <p style="color:#6B7280;margin:12px 0 24px;">
                 <?php echo esc_html( $message ); ?>
             </p>
-            <a href="<?php echo esc_url( home_url( 'vupvup/dashboard/' ) ); ?>"
+            <a href="<?php echo esc_url( home_url( 'dashboard/' ) ); ?>"
                class="vupvup-btn vupvup-btn-ghost">
                 <?php esc_html_e( 'Gå til dashboard', 'vupvup-qa' ); ?>
             </a>
