@@ -133,7 +133,8 @@ class VupVup_QA_Frontend {
         $status  = get_post_meta( $event_id, '_vupvup_event_status', true ) ?: 'draft';
         $qr_url  = get_post_meta( $event_id, '_vupvup_event_qr_url', true );
         $token   = get_post_meta( $event_id, '_vupvup_event_token', true );
-        $landing = $token ? home_url( 'qa/' . $token . '/' ) : '';
+        $landing   = $token ? home_url( 'qa/' . $token . '/' ) : '';
+        $bigscreen = $token ? home_url( 'qa/' . $token . '/storskarm/' ) : '';
         $this->enqueue_dashboard_assets( $event_id );
         include VUPVUP_QA_DIR . 'public/templates/dashboard-event-live.php';
     }
