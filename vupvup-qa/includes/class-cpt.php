@@ -34,19 +34,6 @@ class VupVup_QA_CPT {
         ] );
     }
 
-    public function register_rewrite_rules(): void {
-        add_rewrite_rule(
-            '^qa/([a-zA-Z0-9_-]+)/?$',
-            'index.php?vupvup_event_token=$matches[1]',
-            'top'
-        );
-    }
-
-    public function add_query_vars( array $vars ): array {
-        $vars[] = 'vupvup_event_token';
-        return $vars;
-    }
-
     public function add_meta_boxes(): void {
         add_meta_box(
             'vupvup_event_details',
