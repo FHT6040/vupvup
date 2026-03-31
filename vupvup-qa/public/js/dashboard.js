@@ -293,6 +293,28 @@
     pollTimer = setInterval(() => loadQuestions(false), 5000);
   }
 
+  // ─── Verify banner (resend email) ────────────────────────────────────────────
+  const resendBtn = document.querySelector('.vupvup-resend-btn');
+  if (resendBtn) {
+    resendBtn.addEventListener('click', async () => {
+      resendBtn.disabled = true;
+      const msg = document.querySelector('.vupvup-resend-msg');
+      try {
+        const fd = new FormData();
+        fd.append('action', 'vupvup_resend_verification');
+        fd.append('nonce',  resendBtn.dataset.nonce);
+        const res  = await fetch(d.ajaxUrl, { method: 'POST', body: fd });
+        const json = await res.json();
+        if (msg) {
+          msg.textContent = json.data || 'E-mail sendt!';
+          msg.style.display = 'inline';
+        }
+      } catch {
+        resendBtn.disabled = false;
+      }
+    });
+  }
+
   // ─── Helpers ─────────────────────────────────────────────────────────────────
   async function post(url, body) {
     return fetch(url, {
