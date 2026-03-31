@@ -19,7 +19,7 @@
     <!-- Event header -->
     <div class="vupvup-dash-header vupvup-event-header">
         <div>
-            <a href="<?php echo esc_url( home_url( 'vupvup/dashboard/' ) ); ?>" class="vupvup-back">
+            <a href="<?php echo esc_url( home_url( 'dashboard/' ) ); ?>" class="vupvup-back">
                 ← <?php esc_html_e( 'Mine events', 'vupvup-qa' ); ?>
             </a>
             <h1><?php echo esc_html( $event->post_title ); ?></h1>
