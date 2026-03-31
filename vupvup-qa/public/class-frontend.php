@@ -278,7 +278,7 @@ class VupVup_QA_Frontend {
         }
 
         wp_send_json_success( [
-            'redirect_url' => home_url( 'vupvup/dashboard/event/' . $post_id . '/' ),
+            'redirect_url' => home_url( 'dashboard/event/' . $post_id . '/' ),
         ] );
     }
 
