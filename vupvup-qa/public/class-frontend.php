@@ -71,7 +71,7 @@ class VupVup_QA_Frontend {
 
     private function render_register(): void {
         if ( is_user_logged_in() ) {
-            wp_redirect( home_url( 'vupvup/dashboard/' ) ); exit;
+            wp_redirect( home_url( 'app/dashboard/' ) ); exit;
         }
         $this->enqueue_dashboard_assets();
         include VUPVUP_QA_DIR . 'public/templates/register.php';
@@ -79,7 +79,7 @@ class VupVup_QA_Frontend {
 
     private function render_login(): void {
         if ( is_user_logged_in() ) {
-            wp_redirect( home_url( 'vupvup/dashboard/' ) ); exit;
+            wp_redirect( home_url( 'app/dashboard/' ) ); exit;
         }
         $this->enqueue_dashboard_assets();
         include VUPVUP_QA_DIR . 'public/templates/login.php';
