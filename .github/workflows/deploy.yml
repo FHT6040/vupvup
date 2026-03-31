@@ -22,7 +22,9 @@ jobs:
           server:          ${{ secrets.SFTP_HOST }}
           username:        ${{ secrets.SFTP_USER }}
           password:        ${{ secrets.SFTP_PASSWORD }}
-          protocol:        ftp
+          protocol:        ftps
+          security:        loose
+          timeout:         60000
           local-dir:       ./vupvup-qa/
           server-dir:      ${{ secrets.SFTP_PATH }}vupvup-qa/
           exclude:         |
