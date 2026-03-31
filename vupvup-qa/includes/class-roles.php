@@ -40,6 +40,46 @@ class VupVup_QA_Roles {
     }
 
     /**
+     * Prevent custom roles from accessing wp-admin and hide the admin bar.
+     * Hooked on 'admin_init' and 'show_admin_bar'.
+     */
+    public static function restrict_admin_access(): void {
+        if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+            return;
+        }
+        if ( ! is_user_logged_in() ) {
+            return;
+        }
+        $user = wp_get_current_user();
+        $vupvup_roles = [ 'event_facilitator', 'event_participant' ];
+        if ( empty( array_intersect( $vupvup_roles, (array) $user->roles ) ) ) {
+            return;
+        }
+        if ( in_array( 'event_facilitator', (array) $user->roles, true ) ) {
+            wp_safe_redirect( home_url( '/vupvup/dashboard/' ) );
+        } else {
+            wp_safe_redirect( home_url( '/' ) );
+        }
+        exit;
+    }
+
+    /**
+     * Hide the WordPress admin bar for custom plugin roles.
+     * Hooked on 'show_admin_bar'.
+     */
+    public static function hide_admin_bar( bool $show ): bool {
+        if ( ! is_user_logged_in() ) {
+            return $show;
+        }
+        $user = wp_get_current_user();
+        $vupvup_roles = [ 'event_facilitator', 'event_participant' ];
+        if ( ! empty( array_intersect( $vupvup_roles, (array) $user->roles ) ) ) {
+            return false;
+        }
+        return $show;
+    }
+
+    /**
      * Check if current user can moderate questions for a given event.
      */
     public static function can_moderate( int $event_id ): bool {
