@@ -19,8 +19,9 @@
 
 html {
   font-size: 16px;
-  /* Prevent iOS font-size bump on landscape */
+  /* Prevent font-size bump on landscape (iOS + others) */
   -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body.vupvup-landing-body {
