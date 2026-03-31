@@ -52,6 +52,12 @@
                     <td><?php echo $start ? esc_html( wp_date( 'd.m.Y H:i', strtotime( $start ) ) ) : '—'; ?></td>
                     <td><?php echo $end   ? esc_html( wp_date( 'd.m.Y H:i', strtotime( $end ) ) )   : '—'; ?></td>
                     <td><?php echo $location ? esc_html( $location ) : '—'; ?></td>
+                    <?php if ( current_user_can( 'vupvup_manage_all_events' ) ) :
+                        $facilitator_id = (int) get_post_meta( $event->ID, '_vupvup_facilitator_id', true );
+                        $facilitator    = $facilitator_id ? get_userdata( $facilitator_id ) : null;
+                    ?>
+                    <td><?php echo $facilitator ? esc_html( $facilitator->display_name ) : '—'; ?></td>
+                    <?php endif; ?>
                     <td class="vupvup-actions">
                         <a href="<?php echo esc_url( get_edit_post_link( $event->ID ) ); ?>">
                             <?php esc_html_e( 'Rediger', 'vupvup-qa' ); ?>
