@@ -7,8 +7,12 @@
         "php": ">=8.0",
         "endroid/qr-code": "^5.0"
     },
+    "require-dev": {
+        "php-stubs/wordpress-stubs": "^6.0"
+    },
     "config": {
         "vendor-dir": "vendor",
-        "optimize-autoloader": true
+        "optimize-autoloader": true,
+        "allow-plugins": {}
     }
 }
