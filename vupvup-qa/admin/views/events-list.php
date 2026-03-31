@@ -23,6 +23,9 @@
                     <th><?php esc_html_e( 'Start', 'vupvup-qa' ); ?></th>
                     <th><?php esc_html_e( 'Slut', 'vupvup-qa' ); ?></th>
                     <th><?php esc_html_e( 'Sted', 'vupvup-qa' ); ?></th>
+                    <?php if ( current_user_can( 'vupvup_manage_all_events' ) ) : ?>
+                    <th><?php esc_html_e( 'Facilitator', 'vupvup-qa' ); ?></th>
+                    <?php endif; ?>
                     <th><?php esc_html_e( 'Handlinger', 'vupvup-qa' ); ?></th>
                 </tr>
             </thead>
