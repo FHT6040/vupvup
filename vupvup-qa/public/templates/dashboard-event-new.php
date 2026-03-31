@@ -16,7 +16,7 @@
 
     <div class="vupvup-dash-header">
         <div>
-            <a href="<?php echo esc_url( home_url( 'vupvup/dashboard/' ) ); ?>" class="vupvup-back">
+            <a href="<?php echo esc_url( home_url( 'dashboard/' ) ); ?>" class="vupvup-back">
                 ← <?php esc_html_e( 'Tilbage', 'vupvup-qa' ); ?>
             </a>
             <h1><?php esc_html_e( 'Opret nyt event', 'vupvup-qa' ); ?></h1>
@@ -90,7 +90,7 @@
             <button type="submit" id="vupvup-new-submit" class="vupvup-btn vupvup-btn-primary vupvup-btn-lg">
                 <?php esc_html_e( 'Opret event', 'vupvup-qa' ); ?>
             </button>
-            <a href="<?php echo esc_url( home_url( 'vupvup/dashboard/' ) ); ?>"
+            <a href="<?php echo esc_url( home_url( 'dashboard/' ) ); ?>"
                class="vupvup-btn vupvup-btn-ghost">
                 <?php esc_html_e( 'Annullér', 'vupvup-qa' ); ?>
             </a>
