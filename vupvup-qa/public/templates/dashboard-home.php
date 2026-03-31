@@ -37,7 +37,7 @@
                 ); ?>
             </p>
         </div>
-        <a href="<?php echo esc_url( home_url( 'vupvup/dashboard/event/ny/' ) ); ?>"
+        <a href="<?php echo esc_url( home_url( 'dashboard/event/ny/' ) ); ?>"
            class="vupvup-btn vupvup-btn-primary">
             + <?php esc_html_e( 'Nyt event', 'vupvup-qa' ); ?>
         </a>
@@ -48,7 +48,7 @@
             <div class="vupvup-dash-empty-icon">📋</div>
             <h2><?php esc_html_e( 'Ingen events endnu', 'vupvup-qa' ); ?></h2>
             <p><?php esc_html_e( 'Opret dit første event og del QR-koden med dit publikum.', 'vupvup-qa' ); ?></p>
-            <a href="<?php echo esc_url( home_url( 'vupvup/dashboard/event/ny/' ) ); ?>"
+            <a href="<?php echo esc_url( home_url( 'dashboard/event/ny/' ) ); ?>"
                class="vupvup-btn vupvup-btn-primary">
                 <?php esc_html_e( 'Opret første event', 'vupvup-qa' ); ?>
             </a>
@@ -95,13 +95,13 @@
                 </div>
 
                 <div class="vupvup-event-card-actions">
-                    <a href="<?php echo esc_url( home_url( 'vupvup/dashboard/event/' . $event->ID . '/' ) ); ?>"
+                    <a href="<?php echo esc_url( home_url( 'dashboard/event/' . $event->ID . '/' ) ); ?>"
                        class="vupvup-btn vupvup-btn-primary vupvup-btn-sm">
                         <?php echo $status === 'active'
                             ? esc_html__( 'Åbn live dashboard', 'vupvup-qa' )
                             : esc_html__( 'Se event', 'vupvup-qa' ); ?>
                     </a>
-                    <a href="<?php echo esc_url( home_url( 'vupvup/dashboard/event/' . $event->ID . '/rediger/' ) ); ?>"
+                    <a href="<?php echo esc_url( home_url( 'dashboard/event/' . $event->ID . '/rediger/' ) ); ?>"
                        class="vupvup-btn vupvup-btn-ghost vupvup-btn-sm">
                         <?php esc_html_e( 'Rediger', 'vupvup-qa' ); ?>
                     </a>
