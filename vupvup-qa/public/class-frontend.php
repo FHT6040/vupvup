@@ -304,7 +304,7 @@ class VupVup_QA_Frontend {
         update_post_meta( $event_id, '_vupvup_event_guest_allowed', ! empty( $_POST['guest_allowed'] ) ? 1 : 0 );
 
         wp_send_json_success( [
-            'redirect_url' => home_url( 'vupvup/dashboard/event/' . $event_id . '/' ),
+            'redirect_url' => home_url( 'dashboard/event/' . $event_id . '/' ),
         ] );
     }
 
