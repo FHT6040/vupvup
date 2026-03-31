@@ -5,9 +5,16 @@ defined( 'ABSPATH' ) || exit;
 <html <?php language_attributes(); ?>>
 <head>
     <meta charset="<?php bloginfo( 'charset' ); ?>">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="robots" content="noindex,nofollow">
     <title><?php echo esc_html( $event_title ); ?> — Q&amp;A</title>
+
+    <!-- PWA / mobile app feel -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="<?php echo esc_attr( $event_title ); ?>">
+    <meta name="theme-color" content="#5B21B6">
     <?php wp_head(); ?>
 </head>
 <body class="vupvup-landing-body">
