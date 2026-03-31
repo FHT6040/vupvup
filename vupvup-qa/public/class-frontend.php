@@ -127,7 +127,7 @@ class VupVup_QA_Frontend {
         $this->require_login();
         $event_id = (int) get_query_var( 'vupvup_event_id' );
         if ( ! $event_id || ! VupVup_QA_Roles::can_moderate( $event_id ) ) {
-            wp_redirect( home_url( 'vupvup/dashboard/' ) ); exit;
+            wp_redirect( home_url( 'dashboard/' ) ); exit;
         }
         $event   = get_post( $event_id );
         $status  = get_post_meta( $event_id, '_vupvup_event_status', true ) ?: 'draft';
