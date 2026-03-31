@@ -1,0 +1,30 @@
+name: Deploy til Simply.com
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'vupvup-qa/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hent kode
+        uses: actions/checkout@v4
+
+      - name: Upload plugin via SFTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server:          ${{ secrets.SFTP_HOST }}
+          username:        ${{ secrets.SFTP_USER }}
+          password:        ${{ secrets.SFTP_PASSWORD }}
+          protocol:        ftp
+          local-dir:       ./vupvup-qa/
+          server-dir:      ${{ secrets.SFTP_PATH }}vupvup-qa/
+          exclude:         |
+            **/.git*
+            **/.git*/**
+            **/vendor/**
+            **/node_modules/**
