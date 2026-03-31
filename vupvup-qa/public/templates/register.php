@@ -62,7 +62,7 @@
 
         <p class="vupvup-auth-switch">
             <?php esc_html_e( 'Har du allerede en konto?', 'vupvup-qa' ); ?>
-            <a href="<?php echo esc_url( home_url( 'vupvup/login/' ) ); ?>">
+            <a href="<?php echo esc_url( home_url( 'login/' ) ); ?>">
                 <?php esc_html_e( 'Log ind her', 'vupvup-qa' ); ?>
             </a>
         </p>
