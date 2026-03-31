@@ -1,0 +1,126 @@
+/* VupVup Live Q&A — Admin styles */
+
+:root {
+  --vv-primary:  #5B21B6;
+  --vv-active:   #059669;
+  --vv-draft:    #D97706;
+  --vv-closed:   #6B7280;
+  --vv-pending:  #2563EB;
+  --vv-rejected: #DC2626;
+  --vv-asked:    #059669;
+}
+
+/* Layout */
+.vupvup-wrap h1 { margin-bottom: 20px; }
+.vupvup-empty   { padding: 40px; text-align: center; color: #6B7280; }
+
+/* Status badges */
+.vupvup-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: .75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.vupvup-status-draft   { background: #FEF3C7; color: #92400E; }
+.vupvup-status-active  { background: #D1FAE5; color: #065F46; }
+.vupvup-status-closed  { background: #F3F4F6; color: #4B5563; }
+.vupvup-status-pending  { background: #DBEAFE; color: #1E40AF; }
+.vupvup-status-approved { background: #D1FAE5; color: #065F46; }
+.vupvup-status-rejected { background: #FEE2E2; color: #991B1B; }
+.vupvup-status-hidden   { background: #F3F4F6; color: #4B5563; }
+.vupvup-status-asked    { background: #E0E7FF; color: #3730A3; }
+
+/* Events table */
+.vupvup-events-table .vupvup-actions a { margin-right: 2px; }
+
+/* Facilitator dashboard */
+.vupvup-dashboard-wrap { max-width: 1100px; }
+
+.vupvup-event-selector {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+.vupvup-event-selector select { min-width: 260px; }
+
+.vupvup-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+.vupvup-filter-bar label { display: flex; align-items: center; gap: 8px; font-weight: 500; }
+.vupvup-count { font-size: .85rem; color: #6B7280; margin-left: auto; }
+
+/* Live indicator */
+.vupvup-live-dot {
+  display: inline-block;
+  width: 10px; height: 10px;
+  background: #10B981;
+  border-radius: 50%;
+  animation: vv-pulse 1.5s infinite;
+}
+@keyframes vv-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: .3; }
+}
+
+/* Question cards */
+.vupvup-questions-container { max-height: 75vh; overflow-y: auto; }
+
+.vupvup-question-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 10px;
+  transition: border-color .15s;
+}
+.vupvup-question-card[data-status="pending"]  { border-left: 4px solid var(--vv-pending); }
+.vupvup-question-card[data-status="approved"] { border-left: 4px solid var(--vv-active); }
+.vupvup-question-card[data-status="asked"]    { border-left: 4px solid #7C3AED; opacity: .75; }
+.vupvup-question-card[data-status="rejected"],
+.vupvup-question-card[data-status="hidden"]   { opacity: .5; }
+
+.vupvup-question-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+  font-size: .82rem;
+  color: #6B7280;
+}
+.vupvup-q-author { font-weight: 600; color: #374151; }
+.vupvup-q-upvotes { color: #7C3AED; font-weight: 600; }
+
+.vupvup-q-text {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 12px;
+  color: #111827;
+}
+
+.vupvup-q-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.vupvup-q-actions .button { border-radius: 6px; }
+
+.vupvup-placeholder {
+  padding: 48px;
+  text-align: center;
+  color: #9CA3AF;
+  font-size: 1rem;
+}

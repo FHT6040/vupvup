@@ -1,0 +1,14 @@
+{
+    "name": "vupvup/vupvup-qa",
+    "description": "WordPress Live Q&A plugin for physical events",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "php": ">=8.0",
+        "endroid/qr-code": "^5.0"
+    },
+    "config": {
+        "vendor-dir": "vendor",
+        "optimize-autoloader": true
+    }
+}
