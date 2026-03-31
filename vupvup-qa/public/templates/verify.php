@@ -22,7 +22,7 @@
             <p style="color:#6B7280;margin:12px 0 24px;">
                 <?php echo esc_html( $message ); ?>
             </p>
-            <a href="<?php echo esc_url( home_url( 'vupvup/login/' ) ); ?>"
+            <a href="<?php echo esc_url( home_url( 'login/' ) ); ?>"
                class="vupvup-btn vupvup-btn-primary">
                 <?php esc_html_e( 'Log ind nu', 'vupvup-qa' ); ?>
             </a>
