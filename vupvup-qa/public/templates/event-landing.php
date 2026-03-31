@@ -128,7 +128,7 @@ $is_active   = $status === 'active';
     <?php if ( $needs_login ) : ?>
     <div class="vv-input-login">
         <span><?php esc_html_e( 'Log ind for at stille spørgsmål', 'vupvup-qa' ); ?></span>
-        <a href="<?php echo esc_url( home_url( 'vupvup/login/' ) ); ?>" class="vv-btn-send">
+        <a href="<?php echo esc_url( home_url( 'login/' ) ); ?>" class="vv-btn-send">
             <?php esc_html_e( 'Log ind', 'vupvup-qa' ); ?>
         </a>
     </div>
