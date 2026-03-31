@@ -134,6 +134,23 @@ class VupVup_QA_Frontend {
         include VUPVUP_QA_DIR . 'public/templates/dashboard-event-live.php';
     }
 
+    private function render_event_edit(): void {
+        $this->require_login();
+        $event_id = (int) get_query_var( 'vupvup_event_id' );
+        if ( ! $event_id || ! VupVup_QA_Roles::can_moderate( $event_id ) ) {
+            wp_redirect( home_url( 'vupvup/dashboard/' ) ); exit;
+        }
+        $event    = get_post( $event_id );
+        $status   = get_post_meta( $event_id, '_vupvup_event_status', true ) ?: 'draft';
+        $start    = get_post_meta( $event_id, '_vupvup_event_start_time', true );
+        $end      = get_post_meta( $event_id, '_vupvup_event_end_time', true );
+        $location = get_post_meta( $event_id, '_vupvup_event_location', true );
+        $speakers = get_post_meta( $event_id, '_vupvup_event_speakers', true );
+        $guest    = (bool) get_post_meta( $event_id, '_vupvup_event_guest_allowed', true );
+        $this->enqueue_dashboard_assets( $event_id );
+        include VUPVUP_QA_DIR . 'public/templates/dashboard-event-edit.php';
+    }
+
     private function render_qa_landing( string $token ): void {
         $event_id = VupVup_QA_CPT::get_event_by_token( $token );
         if ( ! $event_id ) {
