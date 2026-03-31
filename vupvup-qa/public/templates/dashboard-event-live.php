@@ -29,6 +29,12 @@
                class="vupvup-btn vupvup-btn-ghost vupvup-btn-sm">
                 <?php esc_html_e( 'Rediger', 'vupvup-qa' ); ?>
             </a>
+            <?php if ( $bigscreen ) : ?>
+            <a href="<?php echo esc_url( $bigscreen ); ?>" target="_blank"
+               class="vupvup-btn vupvup-btn-ghost vupvup-btn-sm">
+                <?php esc_html_e( 'Storskærm ↗', 'vupvup-qa' ); ?>
+            </a>
+            <?php endif; ?>
             <span id="vupvup-status-badge"
                   class="vupvup-badge vupvup-status-<?php echo esc_attr( $status ); ?>">
                 <?php
