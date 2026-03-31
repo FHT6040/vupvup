@@ -20,6 +20,9 @@ class VupVup_QA_Plugin {
 
         VupVup_QA_Installer::maybe_upgrade();
 
+        add_action( 'admin_init', [ 'VupVup_QA_Roles', 'restrict_admin_access' ] );
+        add_filter( 'show_admin_bar', [ 'VupVup_QA_Roles', 'hide_admin_bar' ] );
+
         ( new VupVup_QA_CPT() )->register();
         ( new VupVup_QA_REST_API() )->register();
         ( new VupVup_QA_Cron() )->register();
