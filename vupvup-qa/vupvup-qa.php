@@ -33,6 +33,7 @@ require_once VUPVUP_QA_DIR . 'includes/class-qr-code.php';
 require_once VUPVUP_QA_DIR . 'includes/class-rate-limiter.php';
 require_once VUPVUP_QA_DIR . 'includes/class-rest-api.php';
 require_once VUPVUP_QA_DIR . 'includes/class-cron.php';
+require_once VUPVUP_QA_DIR . 'includes/class-registration.php';
 require_once VUPVUP_QA_DIR . 'public/class-frontend.php';
 require_once VUPVUP_QA_DIR . 'admin/class-admin.php';
 require_once VUPVUP_QA_DIR . 'includes/class-plugin.php';
