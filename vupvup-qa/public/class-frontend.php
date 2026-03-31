@@ -22,15 +22,15 @@ class VupVup_QA_Frontend {
         add_rewrite_rule( '^qa/([a-zA-Z0-9_-]+)/?$',           'index.php?vupvup_event_token=$matches[1]', 'top' );
 
         // Auth
-        add_rewrite_rule( '^vupvup/register/?$',      'index.php?vupvup_page=register',    'top' );
-        add_rewrite_rule( '^vupvup/login/?$',          'index.php?vupvup_page=login',       'top' );
-        add_rewrite_rule( '^vupvup/verify/?$',         'index.php?vupvup_page=verify',      'top' );
+        add_rewrite_rule( '^app/register/?$', 'index.php?vupvup_page=register', 'top' );
+        add_rewrite_rule( '^app/login/?$',    'index.php?vupvup_page=login',    'top' );
+        add_rewrite_rule( '^app/verify/?$',   'index.php?vupvup_page=verify',   'top' );
 
         // Dashboard
-        add_rewrite_rule( '^vupvup/dashboard/?$',                         'index.php?vupvup_page=dashboard',      'top' );
-        add_rewrite_rule( '^vupvup/dashboard/event/ny/?$',                'index.php?vupvup_page=event-new',      'top' );
-        add_rewrite_rule( '^vupvup/dashboard/event/([0-9]+)/?$',          'index.php?vupvup_page=event-live&vupvup_event_id=$matches[1]', 'top' );
-        add_rewrite_rule( '^vupvup/dashboard/event/([0-9]+)/rediger/?$', 'index.php?vupvup_page=event-edit&vupvup_event_id=$matches[1]', 'top' );
+        add_rewrite_rule( '^app/dashboard/?$',                        'index.php?vupvup_page=dashboard',      'top' );
+        add_rewrite_rule( '^app/dashboard/event/ny/?$',               'index.php?vupvup_page=event-new',      'top' );
+        add_rewrite_rule( '^app/dashboard/event/([0-9]+)/?$',         'index.php?vupvup_page=event-live&vupvup_event_id=$matches[1]', 'top' );
+        add_rewrite_rule( '^app/dashboard/event/([0-9]+)/rediger/?$', 'index.php?vupvup_page=event-edit&vupvup_event_id=$matches[1]', 'top' );
     }
 
     public function add_query_vars( array $vars ): array {
