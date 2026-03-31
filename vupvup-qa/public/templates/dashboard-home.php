@@ -14,6 +14,17 @@
 
 <?php include __DIR__ . '/partials/dashboard-nav.php'; ?>
 
+<?php if ( ! VupVup_QA_Registration::is_email_verified( $current_user->ID ) ) : ?>
+<div class="vupvup-verify-banner">
+    <span>📧 <?php esc_html_e( 'Bekræft din e-mailadresse for at sikre din konto.', 'vupvup-qa' ); ?></span>
+    <button class="vupvup-resend-btn"
+            data-nonce="<?php echo esc_attr( wp_create_nonce( 'vupvup_resend_verify' ) ); ?>">
+        <?php esc_html_e( 'Send bekræftelsesmail igen', 'vupvup-qa' ); ?>
+    </button>
+    <span class="vupvup-resend-msg" style="display:none;color:#065F46;font-weight:600;"></span>
+</div>
+<?php endif; ?>
+
 <div class="vupvup-dash-wrap">
 
     <div class="vupvup-dash-header">
