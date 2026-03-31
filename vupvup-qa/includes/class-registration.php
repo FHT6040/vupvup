@@ -83,7 +83,7 @@ class VupVup_QA_Registration {
 
         return new WP_REST_Response( [
             'success'      => true,
-            'redirect_url' => home_url( 'vupvup/dashboard/' ),
+            'redirect_url' => home_url( 'dashboard/' ),
         ], 201 );
     }
 
