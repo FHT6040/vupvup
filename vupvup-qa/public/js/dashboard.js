@@ -129,6 +129,59 @@
     });
   }
 
+  // ─── Edit event form ─────────────────────────────────────────────────────────
+  const editForm    = document.getElementById('vupvup-edit-event-form');
+  const editError   = document.getElementById('vupvup-edit-error');
+  const editSuccess = document.getElementById('vupvup-edit-success');
+  const editSubmit  = document.getElementById('vupvup-edit-submit');
+
+  if (editForm) {
+    editForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      hideEl(editError); hideEl(editSuccess);
+      editSubmit.disabled = true;
+      editSubmit.textContent = 'Gemmer…';
+
+      const body = {
+        event_id:      editForm.event_id.value,
+        title:         editForm.title.value.trim(),
+        start_time:    editForm.start_time.value,
+        end_time:      editForm.end_time.value,
+        location:      editForm.location.value.trim(),
+        speakers:      editForm.speakers.value.trim(),
+        guest_allowed: editForm.guest_allowed.checked ? 1 : 0,
+        nonce:         editForm.vupvup_edit_nonce.value,
+      };
+
+      if (!body.title) {
+        showError(editError, 'Eventtitel er påkrævet.');
+        editSubmit.disabled = false;
+        editSubmit.textContent = 'Gem ændringer';
+        return;
+      }
+
+      try {
+        const res  = await fetch(d.ajaxUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({ action: 'vupvup_update_event', ...body }),
+        });
+        const json = await res.json();
+        if (json.success) {
+          window.location.href = json.data.redirect_url;
+        } else {
+          showError(editError, json.data || 'Noget gik galt.');
+          editSubmit.disabled = false;
+          editSubmit.textContent = 'Gem ændringer';
+        }
+      } catch {
+        showError(editError, 'Netværksfejl. Prøv igen.');
+        editSubmit.disabled = false;
+        editSubmit.textContent = 'Gem ændringer';
+      }
+    });
+  }
+
   // ─── Copy link buttons ────────────────────────────────────────────────────────
   document.querySelectorAll('.vupvup-copy-link').forEach(btn => {
     btn.addEventListener('click', () => {
