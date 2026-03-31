@@ -258,6 +258,32 @@ class VupVup_QA_Frontend {
         ] );
     }
 
+    public function ajax_update_event(): void {
+        if ( ! is_user_logged_in() || ! current_user_can( 'vupvup_manage_own_events' ) ) {
+            wp_send_json_error( 'Adgang nægtet.' );
+        }
+        if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ?? '' ) ), 'vupvup_edit_event' ) ) {
+            wp_send_json_error( 'Ugyldig anmodning.' );
+        }
+        $event_id = (int) ( $_POST['event_id'] ?? 0 );
+        if ( ! $event_id || ! VupVup_QA_Roles::can_moderate( $event_id ) ) {
+            wp_send_json_error( 'Adgang nægtet.' );
+        }
+        $title = sanitize_text_field( $_POST['title'] ?? '' );
+        if ( ! $title ) { wp_send_json_error( 'Titel er påkrævet.' ); }
+
+        wp_update_post( [ 'ID' => $event_id, 'post_title' => $title ] );
+        update_post_meta( $event_id, '_vupvup_event_start_time',    sanitize_text_field( $_POST['start_time'] ?? '' ) );
+        update_post_meta( $event_id, '_vupvup_event_end_time',      sanitize_text_field( $_POST['end_time']   ?? '' ) );
+        update_post_meta( $event_id, '_vupvup_event_location',      sanitize_text_field( $_POST['location']   ?? '' ) );
+        update_post_meta( $event_id, '_vupvup_event_speakers',      sanitize_textarea_field( $_POST['speakers'] ?? '' ) );
+        update_post_meta( $event_id, '_vupvup_event_guest_allowed', ! empty( $_POST['guest_allowed'] ) ? 1 : 0 );
+
+        wp_send_json_success( [
+            'redirect_url' => home_url( 'vupvup/dashboard/event/' . $event_id . '/' ),
+        ] );
+    }
+
     public function ajax_update_event_status(): void {
         check_ajax_referer( 'vupvup_admin', 'nonce' );
         $event_id   = (int) ( $_POST['event_id'] ?? 0 );
