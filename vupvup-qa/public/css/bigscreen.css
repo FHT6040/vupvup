@@ -1,0 +1,205 @@
+/* VupVup — Big Screen display */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --vv-indigo:    #4F46E5;
+  --vv-indigo-lt: rgba(79,70,229,.15);
+  --vv-bg:        #0F0F1A;
+  --vv-surface:   #1A1A2E;
+  --vv-border:    rgba(255,255,255,.08);
+  --vv-text:      #F1F5F9;
+  --vv-muted:     #94A3B8;
+  --vv-radius:    16px;
+}
+
+html, body {
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--vv-bg);
+  color: var(--vv-text);
+  overflow: hidden;
+}
+
+body.vv-big-body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+}
+
+/* ── Header ─────────────────────────────────────────────────────── */
+.vv-big-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 48px;
+  border-bottom: 1px solid var(--vv-border);
+  background: var(--vv-surface);
+  flex-shrink: 0;
+}
+.vv-big-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.vv-big-badge {
+  width: 40px;
+  height: 40px;
+  background: var(--vv-indigo);
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.1rem;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.vv-big-name {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--vv-text);
+}
+.vv-big-event {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--vv-text);
+  flex: 1;
+  text-align: center;
+  padding: 0 24px;
+}
+.vv-big-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: .95rem;
+  color: var(--vv-muted);
+}
+.vv-big-status {
+  padding: 5px 14px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: .8rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+.vv-big-status-active { background: rgba(5,150,105,.2); color: #34D399; }
+.vv-big-status-draft  { background: rgba(234,179,8,.15); color: #FCD34D; }
+.vv-big-status-closed { background: var(--vv-border); color: var(--vv-muted); }
+
+/* ── Questions list ─────────────────────────────────────────────── */
+.vv-big-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  scrollbar-width: none;
+}
+.vv-big-list::-webkit-scrollbar { display: none; }
+
+.vv-big-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex: 1;
+  color: var(--vv-muted);
+  font-size: 1.1rem;
+  min-height: 200px;
+}
+
+/* ── Question card ──────────────────────────────────────────────── */
+.vv-big-card {
+  display: flex;
+  gap: 0;
+  background: var(--vv-surface);
+  border: 1px solid var(--vv-border);
+  border-radius: var(--vv-radius);
+  overflow: hidden;
+  animation: vv-big-in .4s ease;
+}
+.vv-big-card.vv-big-top {
+  border-color: rgba(79,70,229,.5);
+  box-shadow: 0 0 0 1px rgba(79,70,229,.3), 0 8px 32px rgba(79,70,229,.15);
+}
+@keyframes vv-big-in {
+  from { opacity: 0; transform: translateY(-12px) scale(.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.vv-big-vote {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 24px 28px;
+  min-width: 100px;
+  background: var(--vv-indigo-lt);
+  flex-shrink: 0;
+  border-right: 1px solid var(--vv-border);
+}
+.vv-big-card.vv-big-top .vv-big-vote {
+  background: rgba(79,70,229,.25);
+}
+.vv-big-vote-icon {
+  color: var(--vv-indigo);
+  opacity: .8;
+}
+.vv-big-vote-num {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--vv-indigo);
+  line-height: 1;
+}
+
+.vv-big-body-wrap {
+  flex: 1;
+  padding: 24px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.vv-big-q-text {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--vv-text);
+}
+.vv-big-q-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: .9rem;
+  color: var(--vv-muted);
+}
+.vv-big-q-meta span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.vv-big-top-badge {
+  background: var(--vv-indigo);
+  color: #fff;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+/* ── Two-column layout for wide screens ─────────────────────────── */
+@media (min-width: 1200px) {
+  .vv-big-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-content: start;
+  }
+  .vv-big-empty {
+    grid-column: 1 / -1;
+  }
+}
