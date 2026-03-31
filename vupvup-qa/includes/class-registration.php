@@ -121,7 +121,7 @@ class VupVup_QA_Registration {
         $verify_url = add_query_arg( [
             'token' => $token,
             'uid'   => $user_id,
-        ], home_url( 'vupvup/verify/' ) );
+        ], home_url( 'verify/' ) );
 
         $site_name = get_bloginfo( 'name' );
         $subject   = sprintf( __( 'Bekræft din e-mail — %s', 'vupvup-qa' ), $site_name );
