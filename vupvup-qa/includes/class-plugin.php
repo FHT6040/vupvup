@@ -23,6 +23,7 @@ class VupVup_QA_Plugin {
         ( new VupVup_QA_CPT() )->register();
         ( new VupVup_QA_REST_API() )->register();
         ( new VupVup_QA_Cron() )->register();
+        ( new VupVup_QA_Registration() )->register();
         ( new VupVup_QA_Frontend() )->register();
 
         if ( is_admin() ) {
