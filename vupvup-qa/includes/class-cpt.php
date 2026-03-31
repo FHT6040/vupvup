@@ -5,11 +5,9 @@ class VupVup_QA_CPT {
 
     public function register(): void {
         add_action( 'init', [ $this, 'register_post_type' ] );
-        add_action( 'init', [ $this, 'register_rewrite_rules' ] );
         add_action( 'add_meta_boxes', [ $this, 'add_meta_boxes' ] );
         add_action( 'save_post_event_qna', [ $this, 'save_meta' ], 10, 2 );
         add_action( 'wp_insert_post', [ $this, 'generate_token_and_qr' ], 10, 3 );
-        add_filter( 'query_vars', [ $this, 'add_query_vars' ] );
     }
 
     public function register_post_type(): void {
