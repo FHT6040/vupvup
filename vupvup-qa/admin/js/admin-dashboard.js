@@ -291,15 +291,15 @@
     }
   }
 
-  // Auto-start polling if current event is active on page load.
+  // Auto-start if an event is pre-selected on page load (e.g. via ?event_id= URL param).
   if (eventSelect && eventSelect.value) {
     const opt = eventSelect.selectedOptions[0];
-    if (opt && opt.dataset.status === 'active') {
+    if (opt && opt.value) {
       currentEventId = parseInt(eventSelect.value, 10);
-      currentStatus  = 'active';
+      currentStatus  = opt.dataset.status || null;
       updateUI();
       loadQuestions(true);
-      startPolling();
+      if (currentStatus === 'active') startPolling();
     }
   }
 
