@@ -339,7 +339,7 @@ class VupVup_QA_Frontend {
 
     private function require_login(): void {
         if ( ! is_user_logged_in() ) {
-            wp_redirect( home_url( 'vupvup/login/' ) ); exit;
+            wp_redirect( home_url( 'login/' ) ); exit;
         }
         if ( ! current_user_can( 'vupvup_view_dashboard' ) ) {
             wp_die( esc_html__( 'Adgang nægtet.', 'vupvup-qa' ) );
