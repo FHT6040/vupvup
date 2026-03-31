@@ -1,5 +1,5 @@
 <?php defined( 'ABSPATH' ) || exit;
-/** @var WP_Post $event, int $event_id, string $status, string $qr_url, string $landing */
+/** @var WP_Post $event, int $event_id, string $status, string $qr_url, string $landing, string $bigscreen */
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
