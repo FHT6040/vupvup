@@ -9,7 +9,8 @@ class VupVup_QA_Frontend {
         add_action( 'template_redirect',              [ $this, 'route_request' ] );
         add_action( 'wp_ajax_vupvup_guest_login',     [ $this, 'ajax_guest_login' ] );
         add_action( 'wp_ajax_nopriv_vupvup_guest_login', [ $this, 'ajax_guest_login' ] );
-        add_action( 'wp_ajax_vupvup_create_event',    [ $this, 'ajax_create_event' ] );
+        add_action( 'wp_ajax_vupvup_create_event',        [ $this, 'ajax_create_event' ] );
+        add_action( 'wp_ajax_vupvup_update_event',        [ $this, 'ajax_update_event' ] );
         add_action( 'wp_ajax_vupvup_update_event_status', [ $this, 'ajax_update_event_status' ] );
     }
 
