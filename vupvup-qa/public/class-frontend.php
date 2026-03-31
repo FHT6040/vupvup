@@ -56,6 +56,7 @@ class VupVup_QA_Frontend {
             'dashboard'  => $this->render_dashboard_home(),
             'event-new'  => $this->render_event_new(),
             'event-live' => $this->render_event_live(),
+            'event-edit' => $this->render_event_edit(),
             default      => null,
         };
 
