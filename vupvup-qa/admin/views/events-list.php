@@ -1,6 +1,10 @@
 <?php defined( 'ABSPATH' ) || exit; ?>
 <div class="wrap vupvup-wrap">
-    <h1 class="wp-heading-inline"><?php esc_html_e( 'Mine Q&A Events', 'vupvup-qa' ); ?></h1>
+    <h1 class="wp-heading-inline">
+        <?php echo current_user_can( 'vupvup_manage_all_events' )
+            ? esc_html__( 'Alle Q&A Events', 'vupvup-qa' )
+            : esc_html__( 'Mine Q&A Events', 'vupvup-qa' ); ?>
+    </h1>
     <a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=event_qna' ) ); ?>" class="page-title-action">
         <?php esc_html_e( 'Opret nyt event', 'vupvup-qa' ); ?>
     </a>
