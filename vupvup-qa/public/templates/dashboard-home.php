@@ -101,6 +101,10 @@
                             ? esc_html__( 'Åbn live dashboard', 'vupvup-qa' )
                             : esc_html__( 'Se event', 'vupvup-qa' ); ?>
                     </a>
+                    <a href="<?php echo esc_url( home_url( 'vupvup/dashboard/event/' . $event->ID . '/rediger/' ) ); ?>"
+                       class="vupvup-btn vupvup-btn-ghost vupvup-btn-sm">
+                        <?php esc_html_e( 'Rediger', 'vupvup-qa' ); ?>
+                    </a>
                     <?php if ( $landing ) : ?>
                     <a href="<?php echo esc_url( $landing ); ?>" target="_blank"
                        class="vupvup-btn vupvup-btn-ghost vupvup-btn-sm">
