@@ -1,11 +1,11 @@
 <?php defined( 'ABSPATH' ) || exit; ?>
 <nav class="vupvup-dash-nav">
     <div class="vupvup-dash-nav-inner">
-        <a href="<?php echo esc_url( home_url( 'vupvup/dashboard/' ) ); ?>" class="vupvup-nav-logo">
+        <a href="<?php echo esc_url( home_url( 'dashboard/' ) ); ?>" class="vupvup-nav-logo">
             VupVup
         </a>
         <div class="vupvup-nav-links">
-            <a href="<?php echo esc_url( home_url( 'vupvup/dashboard/' ) ); ?>"
+            <a href="<?php echo esc_url( home_url( 'dashboard/' ) ); ?>"
                class="vupvup-nav-link <?php echo strpos( $_SERVER['REQUEST_URI'] ?? '', '/event/' ) === false ? 'active' : ''; ?>">
                 <?php esc_html_e( 'Events', 'vupvup-qa' ); ?>
             </a>
