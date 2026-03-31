@@ -29,6 +29,7 @@ class VupVup_QA_Frontend {
         add_rewrite_rule( '^vupvup/dashboard/?$',                         'index.php?vupvup_page=dashboard',      'top' );
         add_rewrite_rule( '^vupvup/dashboard/event/ny/?$',                'index.php?vupvup_page=event-new',      'top' );
         add_rewrite_rule( '^vupvup/dashboard/event/([0-9]+)/?$',          'index.php?vupvup_page=event-live&vupvup_event_id=$matches[1]', 'top' );
+        add_rewrite_rule( '^vupvup/dashboard/event/([0-9]+)/rediger/?$', 'index.php?vupvup_page=event-edit&vupvup_event_id=$matches[1]', 'top' );
     }
 
     public function add_query_vars( array $vars ): array {
