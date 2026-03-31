@@ -17,8 +17,9 @@ class VupVup_QA_Frontend {
     // ── Rewrite rules ──────────────────────────────────────────────────────────
 
     public function add_rewrite_rules(): void {
-        // QR landing page
-        add_rewrite_rule( '^qa/([a-zA-Z0-9_-]+)/?$', 'index.php?vupvup_event_token=$matches[1]', 'top' );
+        // QR landing page + big screen
+        add_rewrite_rule( '^qa/([a-zA-Z0-9_-]+)/storskarm/?$', 'index.php?vupvup_event_token=$matches[1]&vupvup_page=bigscreen', 'top' );
+        add_rewrite_rule( '^qa/([a-zA-Z0-9_-]+)/?$',           'index.php?vupvup_event_token=$matches[1]', 'top' );
 
         // Auth
         add_rewrite_rule( '^vupvup/register/?$',      'index.php?vupvup_page=register',    'top' );
