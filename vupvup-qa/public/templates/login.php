@@ -51,7 +51,7 @@
 
         <p class="vupvup-auth-switch">
             <?php esc_html_e( 'Ny bruger?', 'vupvup-qa' ); ?>
-            <a href="<?php echo esc_url( home_url( 'vupvup/register/' ) ); ?>">
+            <a href="<?php echo esc_url( home_url( 'register/' ) ); ?>">
                 <?php esc_html_e( 'Opret gratis konto', 'vupvup-qa' ); ?>
             </a>
         </p>
