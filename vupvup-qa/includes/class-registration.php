@@ -108,20 +108,50 @@ class VupVup_QA_Registration {
         ] );
     }
 
-    private static function send_welcome_email( int $user_id ): void {
-        $user      = get_userdata( $user_id );
-        $site_name = get_bloginfo( 'name' );
-        $dashboard = home_url( 'vupvup/dashboard/' );
+    /**
+     * Send verification email. User is already logged in — this is just a soft nudge.
+     */
+    public static function send_verification_email( int $user_id ): void {
+        $user  = get_userdata( $user_id );
+        $token = wp_generate_password( 32, false );
 
-        $subject = sprintf( __( 'Velkommen til %s', 'vupvup-qa' ), $site_name );
-        $message = sprintf(
-            __( "Hej %s,\n\nDin konto er oprettet. Du kan nu logge ind og oprette dit første event.\n\n%s\n\nMed venlig hilsen\n%s", 'vupvup-qa' ),
+        update_user_meta( $user_id, 'vupvup_email_verify_token', $token );
+
+        $verify_url = add_query_arg( [
+            'token' => $token,
+            'uid'   => $user_id,
+        ], home_url( 'vupvup/verify/' ) );
+
+        $site_name = get_bloginfo( 'name' );
+        $subject   = sprintf( __( 'Bekræft din e-mail — %s', 'vupvup-qa' ), $site_name );
+        $message   = sprintf(
+            /* translators: 1: first name, 2: verify URL, 3: site name */
+            __( "Hej %1\$s,\n\nKlik på linket nedenfor for at bekræfte din e-mailadresse:\n\n%2\$s\n\nLinket udløber ikke — du kan bruge det når det passer dig.\n\nMed venlig hilsen\n%3\$s", 'vupvup-qa' ),
             $user->first_name ?: $user->display_name,
-            $dashboard,
+            $verify_url,
             $site_name
         );
 
         wp_mail( $user->user_email, $subject, $message );
+    }
+
+    /**
+     * Check if the current user has verified their email.
+     */
+    public static function is_email_verified( int $user_id ): bool {
+        return (bool) get_user_meta( $user_id, 'vupvup_email_verified', true );
+    }
+
+    /**
+     * Resend verification email via AJAX.
+     */
+    public static function ajax_resend_verification(): void {
+        check_ajax_referer( 'vupvup_resend_verify', 'nonce' );
+        if ( ! is_user_logged_in() ) {
+            wp_send_json_error( 'Ikke logget ind.' );
+        }
+        self::send_verification_email( get_current_user_id() );
+        wp_send_json_success( __( 'E-mail sendt! Tjek din indbakke.', 'vupvup-qa' ) );
     }
 
     /**
