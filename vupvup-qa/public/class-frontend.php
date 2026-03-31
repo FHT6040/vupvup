@@ -199,6 +199,25 @@ class VupVup_QA_Frontend {
         include VUPVUP_QA_DIR . 'public/templates/event-landing.php';
     }
 
+    private function render_bigscreen( string $token ): void {
+        $event_id = VupVup_QA_CPT::get_event_by_token( $token );
+        if ( ! $event_id ) {
+            wp_die( esc_html__( 'Dette event findes ikke.', 'vupvup-qa' ), '', [ 'response' => 404 ] );
+        }
+        $status      = get_post_meta( $event_id, '_vupvup_event_status', true );
+        $event_title = get_the_title( $event_id );
+
+        wp_enqueue_style(  'vupvup-bigscreen', VUPVUP_QA_URL . 'public/css/bigscreen.css', [], VUPVUP_QA_VERSION );
+        wp_enqueue_script( 'vupvup-bigscreen', VUPVUP_QA_URL . 'public/js/bigscreen.js',   [], VUPVUP_QA_VERSION, true );
+        wp_localize_script( 'vupvup-bigscreen', 'vupvupBig', [
+            'restUrl'     => rest_url( 'vupvup-qa/v1' ),
+            'nonce'       => wp_create_nonce( 'wp_rest' ),
+            'eventId'     => $event_id,
+            'eventStatus' => $status,
+        ] );
+        include VUPVUP_QA_DIR . 'public/templates/bigscreen.php';
+    }
+
     // ── AJAX handlers ──────────────────────────────────────────────────────────
 
     public function ajax_guest_login(): void {
