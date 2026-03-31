@@ -14,7 +14,7 @@
             <span class="vupvup-nav-name">
                 <?php echo esc_html( wp_get_current_user()->display_name ); ?>
             </span>
-            <a href="<?php echo esc_url( wp_logout_url( home_url( 'vupvup/login/' ) ) ); ?>"
+            <a href="<?php echo esc_url( wp_logout_url( home_url( 'login/' ) ) ); ?>"
                class="vupvup-btn vupvup-btn-ghost vupvup-btn-sm">
                 <?php esc_html_e( 'Log ud', 'vupvup-qa' ); ?>
             </a>
