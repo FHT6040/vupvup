@@ -5,6 +5,7 @@ class VupVup_QA_Registration {
 
     public function register(): void {
         add_action( 'rest_api_init', [ $this, 'register_routes' ] );
+        add_action( 'wp_ajax_vupvup_resend_verification', [ $this, 'ajax_resend_verification' ] );
     }
 
     public function register_routes(): void {
