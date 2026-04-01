@@ -391,6 +391,75 @@
       } catch {}
     }
 
+    // ── Highlight button ──────────────────────────────────────────────
+    async function toggleHighlight(qId, highlighted, card) {
+      try {
+        const res  = await fetch(`${d.restUrl}/questions/${qId}/highlight`, {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': d.nonce },
+          body:    JSON.stringify({ highlighted }),
+        });
+        const json = await res.json();
+        if (json.success) {
+          // Update all cards: clear others, set this one.
+          document.querySelectorAll('.vupvup-q-card').forEach(c => {
+            c.classList.remove('is-highlighted');
+            c.querySelector('.btn-highlight')?.classList.remove('is-highlighted');
+          });
+          if (json.highlighted) {
+            card.classList.add('is-highlighted');
+            card.querySelector('.btn-highlight')?.classList.add('is-highlighted');
+          }
+        }
+      } catch { alert('Fejl. Prøv igen.'); }
+    }
+
+    // ── Active slot buttons ───────────────────────────────────────────
+    document.querySelectorAll('.vv-slot-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const slotIndex = parseInt(btn.dataset.slot, 10);
+        try {
+          await fetch(`${d.restUrl}/events/${d.eventId}/active-slot`, {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': d.nonce },
+            body:    JSON.stringify({ slot_index: slotIndex }),
+          });
+          document.querySelectorAll('.vv-slot-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+        } catch { alert('Fejl. Prøv igen.'); }
+      });
+    });
+
+    // ── Mode buttons ─────────────────────────────────────────────────
+    document.querySelectorAll('.vv-mode-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const mode = btn.dataset.mode;
+        try {
+          await fetch(`${d.restUrl}/events/${d.eventId}/bigscreen-state`, {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': d.nonce },
+            body:    JSON.stringify({ mode }),
+          });
+          document.querySelectorAll('.vv-mode-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+        } catch { alert('Fejl. Prøv igen.'); }
+      });
+    });
+
+    // Load initial bigscreen state to sync buttons.
+    (async () => {
+      try {
+        const res  = await fetch(`${d.restUrl}/events/${d.eventId}/bigscreen-state`, { headers: { 'X-WP-Nonce': d.nonce } });
+        const json = await res.json();
+        if (json.mode) {
+          document.querySelectorAll('.vv-mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === json.mode));
+        }
+        if (typeof json.active_slot === 'number' && json.active_slot >= 0) {
+          document.querySelectorAll('.vv-slot-btn').forEach(b => b.classList.toggle('active', parseInt(b.dataset.slot, 10) === json.active_slot));
+        }
+      } catch {}
+    })();
+
     // Start
     loadQuestions(true);
     pollTimer = setInterval(() => loadQuestions(false), 5000);
