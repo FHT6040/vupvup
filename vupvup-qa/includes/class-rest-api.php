@@ -280,18 +280,14 @@ class VupVup_QA_REST_API {
         }
 
         $questions = $wpdb->get_results(
-            "SELECT id, question, status, upvotes, highlighted, created_at
+            "SELECT id, event_id, question, status, upvotes, highlighted, author_id, author_name, guest_name, speaker_id, created_at
              FROM {$wpdb->prefix}vupvup_questions
              {$where}
              ORDER BY created_at DESC
              LIMIT 100"
         );
 
-        foreach ( $questions as $q ) {
-            $q->highlighted = (bool) $q->highlighted;
-        }
-
-        return new WP_REST_Response( $questions );
+        return new WP_REST_Response( array_map( [ $this, 'format_question' ], $questions ) );
     }
 
     public function update_status( WP_REST_Request $request ): WP_REST_Response|WP_Error {
