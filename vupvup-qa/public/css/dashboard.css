@@ -295,6 +295,7 @@ body.vupvup-dash-body {
 .vupvup-status-rejected { background: #FEE2E2; color: #991B1B; }
 
 .vupvup-q-badge { margin-left: auto; }
+.vupvup-q-speaker { font-size: .75rem; background: #EDE9FE; color: #5B21B6; border-radius: 4px; padding: 1px 6px; }
 
 /* ── NOTICES ───────────────────────────────────────────────────── */
 .vupvup-notice {
