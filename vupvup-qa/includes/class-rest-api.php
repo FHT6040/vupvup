@@ -280,10 +280,11 @@ class VupVup_QA_REST_API {
         }
 
         $questions = $wpdb->get_results(
-            "SELECT id, event_id, question, status, upvotes, highlighted, author_id, guest_name, speaker_id, created_at
-             FROM {$wpdb->prefix}vupvup_questions
+            "SELECT q.id, q.event_id, q.question, q.status, q.upvotes, q.highlighted, q.author_id, q.guest_name, q.speaker_id, q.created_at, u.display_name as author_name
+             FROM {$wpdb->prefix}vupvup_questions q
+             LEFT JOIN {$wpdb->users} u ON q.author_id = u.ID
              {$where}
-             ORDER BY created_at DESC
+             ORDER BY q.created_at DESC
              LIMIT 100"
         );
 
