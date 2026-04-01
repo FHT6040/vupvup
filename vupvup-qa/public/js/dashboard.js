@@ -182,6 +182,56 @@
     });
   }
 
+  // ─── Slot builder (new + edit forms) ─────────────────────────────────────────
+  const slotList   = document.getElementById('vv-slot-list');
+  const addSlotBtn = document.getElementById('vv-add-slot');
+  const speakersIn = document.getElementById('ev-speakers');
+
+  if (slotList && addSlotBtn && speakersIn) {
+    // Parse existing value (format: "Name|HH:MM-HH:MM") into rows.
+    const existing = speakersIn.value ? speakersIn.value.split('\n').filter(Boolean) : [];
+    existing.forEach(line => addSlotRow(line));
+
+    addSlotBtn.addEventListener('click', () => addSlotRow(''));
+
+    function addSlotRow(line) {
+      const parts = line.split('|');
+      const name  = parts[0]?.trim() || '';
+      const times = (parts[1] || '').split('-');
+      const start = times[0]?.trim() || '';
+      const end   = times[1]?.trim() || '';
+
+      const row = document.createElement('div');
+      row.className = 'vv-slot-row';
+      row.innerHTML = `
+        <input type="text"  placeholder="Navn på taler" value="${escAttr(name)}" class="vv-slot-name">
+        <input type="time"  placeholder="Start" value="${escAttr(start)}" class="vv-slot-start">
+        <input type="time"  placeholder="Slut"  value="${escAttr(end)}"   class="vv-slot-end">
+        <button type="button" class="vv-slot-remove" title="Fjern">✕</button>`;
+      row.querySelector('.vv-slot-remove').addEventListener('click', () => {
+        row.remove(); serializeSlots();
+      });
+      row.querySelectorAll('input').forEach(i => i.addEventListener('input', serializeSlots));
+      slotList.appendChild(row);
+      serializeSlots();
+    }
+
+    function serializeSlots() {
+      const lines = [...slotList.querySelectorAll('.vv-slot-row')].map(row => {
+        const name  = row.querySelector('.vv-slot-name').value.trim();
+        const start = row.querySelector('.vv-slot-start').value;
+        const end   = row.querySelector('.vv-slot-end').value;
+        if (!name) return null;
+        return start || end ? `${name}|${start}-${end}` : name;
+      }).filter(Boolean);
+      speakersIn.value = lines.join('\n');
+    }
+
+    function escAttr(s) {
+      return String(s).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+  }
+
   // ─── Copy link buttons ────────────────────────────────────────────────────────
   document.querySelectorAll('.vupvup-copy-link').forEach(btn => {
     btn.addEventListener('click', () => {
