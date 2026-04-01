@@ -340,9 +340,14 @@
       badge.textContent = statusLabel(q.status);
       badge.className   = `vupvup-badge vupvup-status-${q.status} vupvup-q-badge`;
 
-      card.querySelector('.btn-approve').addEventListener('click', () => updateStatus(q.id, 'approved', card));
-      card.querySelector('.btn-reject').addEventListener('click',  () => updateStatus(q.id, 'rejected', card));
-      card.querySelector('.btn-asked').addEventListener('click',   () => updateStatus(q.id, 'asked',    card));
+      card.querySelector('.btn-approve').addEventListener('click',    () => updateStatus(q.id, 'approved', card));
+      card.querySelector('.btn-reject').addEventListener('click',    () => updateStatus(q.id, 'rejected', card));
+      card.querySelector('.btn-asked').addEventListener('click',    () => updateStatus(q.id, 'asked',    card));
+      const hlBtn = card.querySelector('.btn-highlight');
+      if (hlBtn) hlBtn.addEventListener('click', () => {
+        const isNowHighlighted = !card.classList.contains('is-highlighted');
+        toggleHighlight(q.id, isNowHighlighted, card);
+      });
       card.querySelector('.btn-copy').addEventListener('click',    () => {
         const btn = card.querySelector('.btn-copy');
         navigator.clipboard.writeText(q.question).then(() => {
