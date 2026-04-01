@@ -192,6 +192,32 @@ body.vv-big-body {
   border-radius: 999px;
 }
 
+/* ── Slot banner ────────────────────────────────────────────────── */
+.vv-big-slot-banner {
+  background: var(--vv-indigo);
+  color: #fff;
+  text-align: center;
+  padding: 10px 48px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: .03em;
+  flex-shrink: 0;
+}
+.vv-hidden { display: none !important; }
+
+/* ── Highlighted card ───────────────────────────────────────────── */
+.vv-big-card.vv-big-highlighted {
+  border-color: #F59E0B;
+  box-shadow: 0 0 0 2px rgba(245,158,11,.4), 0 8px 32px rgba(245,158,11,.15);
+}
+.vv-big-highlighted .vv-big-vote {
+  background: rgba(245,158,11,.2);
+}
+.vv-big-highlighted .vv-big-vote-num,
+.vv-big-highlighted .vv-big-vote-icon {
+  color: #F59E0B;
+}
+
 /* ── Two-column layout for wide screens ─────────────────────────── */
 @media (min-width: 1200px) {
   .vv-big-list {
