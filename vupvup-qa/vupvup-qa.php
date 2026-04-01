@@ -3,7 +3,7 @@
  * Plugin Name: VupVup
  * Plugin URI:  https://vupvup.dk
  * Description: Live Q&A for physical events via QR code. Facilitators moderate questions in real time.
- * Version:     1.0.0
+ * Version:     1.1.0
  * Author:      VupVup
  * Author URI:  https://vupvup.dk
  * License:     GPL-2.0+
