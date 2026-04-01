@@ -258,11 +258,38 @@
   const qTpl  = document.getElementById('vupvup-q-tpl');
 
   if ( qList && d.eventId ) {
-    let currentFilter = 'pending';
-    let currentSort   = 'newest';
-    let highestId     = 0;
-    let pollTimer     = null;
-    const rendered    = new Set();
+    let currentFilter  = 'pending';
+    let currentSort    = 'newest';
+    let currentSpeaker = 0;
+    let highestId      = 0;
+    let pollTimer      = null;
+    const rendered     = new Set();
+
+    // Build speaker name lookup: { 1: "Jens Nielsen", 2: "Peter Magnussen", ... }
+    const speakerNames = {};
+    if (d.speakers && d.speakers.length) {
+      d.speakers.forEach((s, i) => { speakerNames[i + 1] = s.split('|')[0].trim(); });
+    }
+
+    // Populate speaker filter dropdown
+    const speakerFilter = document.getElementById('vupvup-speaker-filter');
+    if (speakerFilter && d.speakers && d.speakers.length > 0) {
+      const allOpt = document.createElement('option');
+      allOpt.value = '0';
+      allOpt.textContent = 'Alle talere';
+      speakerFilter.appendChild(allOpt);
+      d.speakers.forEach((s, i) => {
+        const opt = document.createElement('option');
+        opt.value = String(i + 1);
+        opt.textContent = s.split('|')[0].trim();
+        speakerFilter.appendChild(opt);
+      });
+      speakerFilter.style.display = '';
+      speakerFilter.addEventListener('change', () => {
+        currentSpeaker = parseInt(speakerFilter.value, 10) || 0;
+        loadQuestions(true);
+      });
+    }
 
     // Filter buttons
     document.querySelectorAll('.vupvup-filter-btn').forEach(btn => {
