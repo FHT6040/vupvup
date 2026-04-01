@@ -314,6 +314,60 @@ body.vupvup-dash-body {
 
 .vupvup-hidden { display: none !important; }
 
+/* ── SLOT BUILDER ──────────────────────────────────────────────── */
+.vv-slot-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+.vv-slot-row {
+  display: flex; gap: 8px; align-items: center;
+  background: var(--vv-bg); border-radius: 6px; padding: 8px;
+}
+.vv-slot-row input { flex: 1; padding: 7px 10px; border: 1.5px solid var(--vv-border);
+  border-radius: 6px; font-size: .88rem; font-family: inherit; background: #fff; }
+.vv-slot-row input[type="time"] { flex: 0 0 100px; }
+.vv-slot-remove {
+  background: none; border: none; cursor: pointer; color: var(--vv-muted);
+  font-size: 1.1rem; line-height: 1; padding: 4px 6px; border-radius: 4px;
+  transition: color .12s;
+}
+.vv-slot-remove:hover { color: var(--vv-danger); }
+
+/* ── SLOT BUTTONS (sidebar) ────────────────────────────────────── */
+.vv-slot-btns { display: flex; flex-direction: column; gap: 6px; }
+.vv-slot-btn {
+  width: 100%; text-align: left; padding: 8px 12px; border-radius: 6px;
+  border: 1.5px solid var(--vv-border); background: var(--vv-bg);
+  font-size: .84rem; cursor: pointer; transition: .12s; font-family: inherit;
+}
+.vv-slot-btn:hover { border-color: var(--vv-accent); background: #fff; }
+.vv-slot-btn.active {
+  background: var(--vv-primary); color: #fff; border-color: var(--vv-primary);
+}
+.vv-slot-none { color: var(--vv-muted); font-style: italic; }
+
+/* ── MODE BUTTONS (sidebar) ────────────────────────────────────── */
+.vv-mode-btns { display: flex; flex-direction: column; gap: 6px; }
+.vv-mode-btn {
+  width: 100%; text-align: left; padding: 8px 12px; border-radius: 6px;
+  border: 1.5px solid var(--vv-border); background: var(--vv-bg);
+  font-size: .84rem; cursor: pointer; transition: .12s; font-family: inherit;
+}
+.vv-mode-btn:hover { border-color: var(--vv-accent); background: #fff; }
+.vv-mode-btn.active {
+  background: var(--vv-primary); color: #fff; border-color: var(--vv-primary);
+}
+
+/* ── HIGHLIGHT BUTTON ──────────────────────────────────────────── */
+.vupvup-btn-highlight {
+  background: #FEF3C7; color: #92400E; border: 1.5px solid #FCD34D;
+}
+.vupvup-btn-highlight:hover { background: #FCD34D; }
+.vupvup-btn-highlight.is-highlighted {
+  background: #F59E0B; color: #fff; border-color: #D97706;
+}
+.vupvup-q-card.is-highlighted {
+  border-left-color: #F59E0B;
+  box-shadow: 0 0 0 2px rgba(245,158,11,.2);
+}
+
 @media (max-width: 600px) {
   .vupvup-auth-card { padding: 28px 20px; }
   .vupvup-form-row  { flex-direction: column; }
