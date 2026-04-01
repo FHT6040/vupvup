@@ -358,6 +358,66 @@ class VupVup_QA_REST_API {
         ] );
     }
 
+    public function toggle_highlight( WP_REST_Request $request ): WP_REST_Response|WP_Error {
+        global $wpdb;
+
+        $question_id = (int) $request->get_param( 'question_id' );
+        $highlighted = $request->get_param( 'highlighted' ) ? 1 : 0;
+
+        // If highlighting, clear all other highlights for same event first.
+        if ( $highlighted ) {
+            $q = $this->fetch_question( $question_id );
+            if ( $q ) {
+                $wpdb->update(
+                    $wpdb->prefix . 'vupvup_questions',
+                    [ 'highlighted' => 0 ],
+                    [ 'event_id' => (int) $q->event_id ],
+                    [ '%d' ], [ '%d' ]
+                );
+            }
+        }
+
+        $wpdb->update(
+            $wpdb->prefix . 'vupvup_questions',
+            [ 'highlighted' => $highlighted ],
+            [ 'id' => $question_id ],
+            [ '%d' ], [ '%d' ]
+        );
+
+        return new WP_REST_Response( [ 'success' => true, 'highlighted' => (bool) $highlighted ] );
+    }
+
+    public function get_bigscreen_state( WP_REST_Request $request ): WP_REST_Response {
+        $event_id = (int) $request->get_param( 'event_id' );
+        $mode     = get_transient( 'vupvup_bigscreen_mode_' . $event_id ) ?: 'all';
+        $slot     = (int) get_transient( 'vupvup_active_slot_' . $event_id );
+        return new WP_REST_Response( [ 'mode' => $mode, 'active_slot' => $slot ] );
+    }
+
+    public function set_bigscreen_state( WP_REST_Request $request ): WP_REST_Response {
+        $event_id = (int) $request->get_param( 'event_id' );
+        $mode     = $request->get_param( 'mode' );
+        set_transient( 'vupvup_bigscreen_mode_' . $event_id, $mode, DAY_IN_SECONDS );
+        return new WP_REST_Response( [ 'success' => true, 'mode' => $mode ] );
+    }
+
+    public function get_active_slot( WP_REST_Request $request ): WP_REST_Response {
+        $event_id = (int) $request->get_param( 'event_id' );
+        $slot     = get_transient( 'vupvup_active_slot_' . $event_id );
+        return new WP_REST_Response( [ 'active_slot' => $slot !== false ? (int) $slot : -1 ] );
+    }
+
+    public function set_active_slot( WP_REST_Request $request ): WP_REST_Response {
+        $event_id   = (int) $request->get_param( 'event_id' );
+        $slot_index = (int) $request->get_param( 'slot_index' );
+        if ( $slot_index < 0 ) {
+            delete_transient( 'vupvup_active_slot_' . $event_id );
+        } else {
+            set_transient( 'vupvup_active_slot_' . $event_id, $slot_index, DAY_IN_SECONDS );
+        }
+        return new WP_REST_Response( [ 'success' => true, 'active_slot' => $slot_index ] );
+    }
+
     // ---------------------------------------------------------------------------
     // Helpers
     // ---------------------------------------------------------------------------
