@@ -56,7 +56,7 @@ class VupVup_QA_Roles {
             return;
         }
         if ( in_array( 'event_facilitator', (array) $user->roles, true ) ) {
-            wp_safe_redirect( home_url( '/vupvup/dashboard/' ) );
+            wp_safe_redirect( home_url( 'dashboard/' ) );
         } else {
             wp_safe_redirect( home_url( '/' ) );
         }
