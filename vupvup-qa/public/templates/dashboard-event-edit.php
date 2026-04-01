@@ -63,11 +63,16 @@
         </div>
 
         <div class="vupvup-form-section">
-            <h2><?php esc_html_e( 'Talere', 'vupvup-qa' ); ?></h2>
-            <div class="vupvup-field">
-                <label for="ev-speakers"><?php esc_html_e( 'Én taler pr. linje', 'vupvup-qa' ); ?></label>
-                <textarea id="ev-speakers" name="speakers" class="vupvup-textarea" rows="4"><?php echo esc_textarea( $speakers ); ?></textarea>
-            </div>
+            <h2><?php esc_html_e( 'Talere / Slots', 'vupvup-qa' ); ?></h2>
+            <div id="vv-slot-list" class="vv-slot-list"></div>
+            <button type="button" id="vv-add-slot" class="vupvup-btn vupvup-btn-ghost vupvup-btn-sm">
+                + <?php esc_html_e( 'Tilføj taler', 'vupvup-qa' ); ?>
+            </button>
+            <input type="hidden" id="ev-speakers" name="speakers"
+                   value="<?php echo esc_attr( $speakers ); ?>">
+            <span class="vupvup-field-hint" style="margin-top:8px;display:block;">
+                <?php esc_html_e( 'Angiv navn og tidspunkt pr. taler. Spørgsmål lukkes 5 min. før slottets sluttid.', 'vupvup-qa' ); ?>
+            </span>
         </div>
 
         <div class="vupvup-form-section">
