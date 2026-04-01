@@ -459,58 +459,85 @@ body.vupvup-landing-body {
 /* Utils */
 .vupvup-hidden { display: none !important; }
 
-/* ── Responsive ──────────────────────────────────────────────── */
+/* ── Mobile event strip (skjult på desktop) ──────────────────── */
+.vv-mobile-strip { display: none; }
+
+/* ── Responsive: tablet ──────────────────────────────────────── */
 @media (max-width: 768px) {
   .vv-layout {
     grid-template-columns: 1fr;
-    padding: 12px 12px 160px;
-    gap: 10px;
+    padding: 16px 16px 160px;
+    gap: 14px;
   }
   .vv-sidebar {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    gap: 12px;
   }
-  .vv-event-icon-area { height: 44px; }
-  .vv-input-bar { padding: 10px 12px calc(10px + env(safe-area-inset-bottom)); }
-  .vv-nav { padding: 0 12px; }
+  .vv-event-icon-area { height: 48px; }
+  .vv-input-bar { padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); }
+  .vv-nav { padding: 0 16px; }
 }
 
+/* ── Responsive: mobil — app-mode ───────────────────────────── */
 @media (max-width: 600px) {
-  /* Kompakt event-kort — skjul ikonområdet, reducer padding */
-  .vv-event-icon-area { display: none; }
-  .vv-event-card { padding: 12px 14px; }
-  .vv-event-title { font-size: .92rem; margin-bottom: 8px; }
 
-  /* Talere vandret i stedet for lodret */
-  .vv-speakers-list {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 8px;
+  /* Vis event-strip, skjul desktop-sidebar */
+  .vv-mobile-strip {
+    display: block;
+    background: var(--vv-white);
+    border-bottom: 1px solid var(--vv-border);
+    padding: 10px 16px 12px;
   }
-  .vv-speaker { gap: 6px; }
-  .vv-avatar { width: 26px; height: 26px; font-size: .72rem; }
-  .vv-speaker-name { font-size: .8rem; }
+  .vv-mobile-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--vv-text);
+    line-height: 1.3;
+    margin-bottom: 7px;
+  }
+  .vv-mobile-chips {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .vv-mobile-chip {
+    background: var(--vv-indigo-lt);
+    color: var(--vv-indigo);
+    border-radius: 999px;
+    padding: 3px 11px;
+    font-size: .78rem;
+    font-weight: 500;
+  }
 
-  /* Stats-kort: kompakt inline layout */
-  .vv-stats-card { padding: 10px 14px; }
-  .vv-stats-header { margin-bottom: 10px; font-size: .76rem; }
-  .vv-stat-num { font-size: 1.4rem; }
+  /* Sidebar helt væk — erstattet af strip */
+  .vv-sidebar { display: none; }
 
-  /* Sidebar: sidekort side om side */
-  .vv-sidebar { grid-template-columns: 1fr 1fr; gap: 8px; }
+  /* Enkelt kolonne, fuld bredde */
+  .vv-layout {
+    grid-template-columns: 1fr;
+    padding: 12px 12px 120px;
+    gap: 0;
+    max-width: 100%;
+  }
 
-  /* Feed og input */
-  .vv-q-vote { min-width: 50px; padding: 10px 8px; }
-  .vv-q-body { padding: 10px 12px; }
-  .vv-q-text { font-size: .9rem; }
+  /* Feed */
+  .vv-feed-header { margin-bottom: 10px; }
+  .vv-feed-title  { font-size: .88rem; }
+  .vv-feed-sort   { font-size: .75rem; }
+  .vv-empty-feed  { padding: 40px 16px; }
 
-  .vv-input { padding: 10px 44px 10px 12px; font-size: .92rem; }
-  .vv-btn-send { padding: 10px 16px; font-size: .88rem; }
-}
+  /* Spørgsmålskort */
+  .vv-q-vote  { min-width: 50px; padding: 10px 8px; }
+  .vv-vote-num { font-size: .85rem; }
+  .vv-q-body  { padding: 10px 12px; }
+  .vv-q-text  { font-size: .92rem; }
 
-@media (max-width: 400px) {
-  /* Meget smal — én kolonne for sidebar-kort */
-  .vv-sidebar { grid-template-columns: 1fr; }
+  /* Input-bar */
+  .vv-input-bar   { padding: 10px 12px calc(10px + env(safe-area-inset-bottom)); }
+  .vv-input        { padding: 11px 46px 11px 14px; font-size: .92rem; }
+  .vv-btn-send     { padding: 11px 18px; font-size: .88rem; gap: 5px; }
+  .vv-select-speaker { max-width: 100%; font-size: .84rem; }
+  .vv-nav          { padding: 0 12px; }
   .vv-nav-meta .vv-nav-stat:first-child { display: none; }
 }
