@@ -37,14 +37,6 @@ class VupVup_QA_Admin {
             'post-new.php?post_type=event_qna'
         );
 
-        add_submenu_page(
-            'vupvup-qa',
-            __( 'Facilitator Dashboard', 'vupvup-qa' ),
-            __( 'Dashboard', 'vupvup-qa' ),
-            'vupvup_moderate_questions',
-            'vupvup-dashboard',
-            [ $this, 'render_facilitator_dashboard' ]
-        );
     }
 
     public function enqueue_scripts( string $hook ): void {
