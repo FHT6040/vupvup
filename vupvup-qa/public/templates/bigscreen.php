@@ -26,6 +26,8 @@ defined( 'ABSPATH' ) || exit;
     </div>
 </div>
 
+<div id="vv-big-slot-banner" class="vv-big-slot-banner vv-hidden"></div>
+
 <div id="vv-big-list" class="vv-big-list">
     <div class="vv-big-empty" id="vv-big-empty">
         <svg width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24" opacity=".3">
