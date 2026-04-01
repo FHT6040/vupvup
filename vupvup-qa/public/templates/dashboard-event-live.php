@@ -191,8 +191,9 @@
         </div>
         <p class="vupvup-q-text"></p>
         <div class="vupvup-q-actions">
-            <button class="vupvup-btn vupvup-btn-sm vupvup-btn-success  btn-approve"><?php esc_html_e( 'Godkend', 'vupvup-qa' ); ?></button>
+            <button class="vupvup-btn vupvup-btn-sm vupvup-btn-success   btn-approve"><?php esc_html_e( 'Godkend', 'vupvup-qa' ); ?></button>
             <button class="vupvup-btn vupvup-btn-sm vupvup-btn-primary  btn-asked"><?php esc_html_e( 'Stillet ✓', 'vupvup-qa' ); ?></button>
+            <button class="vupvup-btn vupvup-btn-sm vupvup-btn-highlight btn-highlight"><?php esc_html_e( '★ Fremhæv', 'vupvup-qa' ); ?></button>
             <button class="vupvup-btn vupvup-btn-sm vupvup-btn-ghost    btn-copy"><?php esc_html_e( 'Kopiér', 'vupvup-qa' ); ?></button>
             <button class="vupvup-btn vupvup-btn-sm vupvup-btn-danger   btn-reject"><?php esc_html_e( 'Afvis', 'vupvup-qa' ); ?></button>
         </div>
