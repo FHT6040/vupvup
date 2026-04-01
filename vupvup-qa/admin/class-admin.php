@@ -62,30 +62,6 @@ class VupVup_QA_Admin {
             VUPVUP_QA_VERSION
         );
 
-        wp_enqueue_script(
-            'vupvup-admin-dashboard',
-            VUPVUP_QA_URL . 'admin/js/admin-dashboard.js',
-            [ 'wp-api-fetch', 'wp-i18n' ],
-            VUPVUP_QA_VERSION,
-            true
-        );
-
-        wp_localize_script( 'vupvup-admin-dashboard', 'vupvupAdminData', [
-            'restUrl'   => rest_url( 'vupvup-qa/v1' ),
-            'nonce'     => wp_create_nonce( 'wp_rest' ),
-            'ajaxUrl'   => admin_url( 'admin-ajax.php' ),
-            'i18n'      => [
-                'approve'  => __( 'Godkend', 'vupvup-qa' ),
-                'reject'   => __( 'Afvis', 'vupvup-qa' ),
-                'hide'     => __( 'Skjul', 'vupvup-qa' ),
-                'asked'    => __( 'Stillet', 'vupvup-qa' ),
-                'copy'     => __( 'Kopiér', 'vupvup-qa' ),
-                'copied'   => __( 'Kopieret!', 'vupvup-qa' ),
-                'newQ'     => __( 'Nyt spørgsmål!', 'vupvup-qa' ),
-                'loading'  => __( 'Henter…', 'vupvup-qa' ),
-                'error'    => __( 'Noget gik galt. Prøv igen.', 'vupvup-qa' ),
-            ],
-        ] );
     }
 
     public function render_events_page(): void {
