@@ -272,11 +272,11 @@ class VupVup_QA_REST_API {
         $since_id = (int) $request->get_param( 'since_id' );
 
         $where = $wpdb->prepare(
-            "WHERE event_id = %d AND status IN ('approved','asked')",
+            "WHERE q.event_id = %d AND q.status IN ('approved','asked')",
             $event_id
         );
         if ( $since_id > 0 ) {
-            $where .= $wpdb->prepare( ' AND id > %d', $since_id );
+            $where .= $wpdb->prepare( ' AND q.id > %d', $since_id );
         }
 
         $questions = $wpdb->get_results(
