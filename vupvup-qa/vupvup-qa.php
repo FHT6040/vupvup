@@ -19,7 +19,7 @@ define( 'VUPVUP_QA_VERSION', '1.0.0' );
 define( 'VUPVUP_QA_FILE', __FILE__ );
 define( 'VUPVUP_QA_DIR', plugin_dir_path( __FILE__ ) );
 define( 'VUPVUP_QA_URL', plugin_dir_url( __FILE__ ) );
-define( 'VUPVUP_QA_DB_VERSION', '1' );
+define( 'VUPVUP_QA_DB_VERSION', '2' );
 
 // Autoload composer dependencies (QR code library etc.)
 if ( file_exists( VUPVUP_QA_DIR . 'vendor/autoload.php' ) ) {
