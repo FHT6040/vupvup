@@ -81,6 +81,55 @@ class VupVup_QA_REST_API {
                 'since_id' => [ 'type' => 'integer', 'required' => false, 'default' => 0 ],
             ],
         ] );
+
+        // Toggle highlight on a question (facilitator).
+        register_rest_route( self::NS, '/questions/(?P<question_id>\d+)/highlight', [
+            'methods'             => 'POST',
+            'callback'            => [ $this, 'toggle_highlight' ],
+            'permission_callback' => [ $this, 'can_moderate_question' ],
+            'args'                => [
+                'question_id' => [ 'type' => 'integer', 'required' => true ],
+                'highlighted' => [ 'type' => 'boolean', 'required' => true ],
+            ],
+        ] );
+
+        // Get/set bigscreen display mode (facilitator write, public read).
+        register_rest_route( self::NS, '/events/(?P<event_id>\d+)/bigscreen-state', [
+            [
+                'methods'             => 'GET',
+                'callback'            => [ $this, 'get_bigscreen_state' ],
+                'permission_callback' => '__return_true',
+                'args'                => [ 'event_id' => [ 'type' => 'integer', 'required' => true ] ],
+            ],
+            [
+                'methods'             => 'POST',
+                'callback'            => [ $this, 'set_bigscreen_state' ],
+                'permission_callback' => [ $this, 'can_moderate' ],
+                'args'                => [
+                    'event_id' => [ 'type' => 'integer', 'required' => true ],
+                    'mode'     => [ 'type' => 'string', 'required' => true, 'enum' => [ 'all', 'highlighted' ] ],
+                ],
+            ],
+        ] );
+
+        // Get/set active speaker slot (facilitator write, public read).
+        register_rest_route( self::NS, '/events/(?P<event_id>\d+)/active-slot', [
+            [
+                'methods'             => 'GET',
+                'callback'            => [ $this, 'get_active_slot' ],
+                'permission_callback' => '__return_true',
+                'args'                => [ 'event_id' => [ 'type' => 'integer', 'required' => true ] ],
+            ],
+            [
+                'methods'             => 'POST',
+                'callback'            => [ $this, 'set_active_slot' ],
+                'permission_callback' => [ $this, 'can_moderate' ],
+                'args'                => [
+                    'event_id'   => [ 'type' => 'integer', 'required' => true ],
+                    'slot_index' => [ 'type' => 'integer', 'required' => true, 'minimum' => -1 ],
+                ],
+            ],
+        ] );
     }
 
     // ---------------------------------------------------------------------------
