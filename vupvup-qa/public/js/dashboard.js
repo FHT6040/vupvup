@@ -232,6 +232,16 @@
     }
   }
 
+  // ─── Default times for datetime fields ───────────────────────────────────────
+  const evStart = document.getElementById('ev-start');
+  const evEnd   = document.getElementById('ev-end');
+  if (evStart) evStart.addEventListener('change', function () {
+    if (this.value && this.value.endsWith('T00:00')) this.value = this.value.replace('T00:00', 'T09:00');
+  });
+  if (evEnd) evEnd.addEventListener('change', function () {
+    if (this.value && this.value.endsWith('T00:00')) this.value = this.value.replace('T00:00', 'T19:00');
+  });
+
   // ─── Copy link buttons ────────────────────────────────────────────────────────
   document.querySelectorAll('.vupvup-copy-link').forEach(btn => {
     btn.addEventListener('click', () => {
