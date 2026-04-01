@@ -40,6 +40,18 @@ $is_active   = $status === 'active';
     </div>
 </header>
 
+<!-- ── Mobile event strip (hidden on desktop) ────────────────── -->
+<div class="vv-mobile-strip">
+    <h1 class="vv-mobile-title"><?php echo esc_html( $event_title ); ?></h1>
+    <?php if ( ! empty( $speakers ) ) : ?>
+    <div class="vv-mobile-chips">
+        <?php foreach ( array_slice( $speakers, 0, 4 ) as $sp ) : ?>
+        <span class="vv-mobile-chip"><?php echo esc_html( $sp ); ?></span>
+        <?php endforeach; ?>
+    </div>
+    <?php endif; ?>
+</div>
+
 <!-- ── Two-column layout ──────────────────────────────────────── -->
 <div class="vv-layout">
 
