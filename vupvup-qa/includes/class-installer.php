@@ -39,12 +39,14 @@ class VupVup_QA_Installer {
             status      ENUM('pending','approved','rejected','hidden','asked') NOT NULL DEFAULT 'pending',
             speaker_id  BIGINT UNSIGNED DEFAULT NULL,
             upvotes     INT UNSIGNED    NOT NULL DEFAULT 0,
+            highlighted TINYINT(1)      NOT NULL DEFAULT 0,
             ip_hash     VARCHAR(64)     DEFAULT NULL,
             created_at  DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (id),
-            KEY event_id  (event_id),
-            KEY status    (status),
-            KEY created_at (created_at)
+            KEY event_id    (event_id),
+            KEY status      (status),
+            KEY highlighted (highlighted),
+            KEY created_at  (created_at)
         ) {$charset_collate};";
 
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
