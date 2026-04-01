@@ -96,34 +96,6 @@ class VupVup_QA_Admin {
         include VUPVUP_QA_DIR . 'admin/views/events-list.php';
     }
 
-    public function render_facilitator_dashboard(): void {
-        if ( ! current_user_can( 'vupvup_moderate_questions' ) ) {
-            wp_die( esc_html__( 'Adgang nægtet.', 'vupvup-qa' ) );
-        }
-        $event_id = isset( $_GET['event_id'] ) ? (int) $_GET['event_id'] : 0;
-        $events   = VupVup_QA_CPT::get_facilitator_events( get_current_user_id() );
-        $event    = $event_id ? get_post( $event_id ) : null;
-        include VUPVUP_QA_DIR . 'admin/views/facilitator-dashboard.php';
-    }
-
-    public function ajax_update_event_status(): void {
-        check_ajax_referer( 'vupvup_admin', 'nonce' );
-
-        $event_id   = (int) ( $_POST['event_id'] ?? 0 );
-        $new_status = sanitize_text_field( $_POST['status'] ?? '' );
-
-        if ( ! $event_id || ! in_array( $new_status, [ 'draft', 'active', 'closed' ], true ) ) {
-            wp_send_json_error( 'Ugyldige data.' );
-        }
-
-        if ( ! VupVup_QA_Roles::can_moderate( $event_id ) ) {
-            wp_send_json_error( 'Adgang nægtet.' );
-        }
-
-        update_post_meta( $event_id, '_vupvup_event_status', $new_status );
-        wp_send_json_success( [ 'status' => $new_status ] );
-    }
-
     public function ajax_regenerate_qr(): void {
         check_ajax_referer( 'vupvup_admin', 'nonce' );
 
