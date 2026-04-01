@@ -280,7 +280,7 @@ class VupVup_QA_REST_API {
         }
 
         $questions = $wpdb->get_results(
-            "SELECT id, question, status, upvotes, created_at
+            "SELECT id, question, status, upvotes, highlighted, created_at
              FROM {$wpdb->prefix}vupvup_questions
              {$where}
              ORDER BY created_at DESC
