@@ -187,6 +187,7 @@
         <div class="vupvup-q-header">
             <span class="vupvup-q-author"></span>
             <span class="vupvup-q-time"></span>
+            <span class="vupvup-q-speaker"></span>
             <span class="vupvup-q-upvotes">▲ <span class="up-num">0</span></span>
             <span class="vupvup-q-badge"></span>
         </div>
