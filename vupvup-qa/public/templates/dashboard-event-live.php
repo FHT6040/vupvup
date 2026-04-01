@@ -161,6 +161,7 @@
                     </button>
                 </div>
                 <div class="vupvup-sort-group">
+                    <select id="vupvup-speaker-filter" class="vupvup-select-sm" style="display:none"></select>
                     <select id="vupvup-sort" class="vupvup-select-sm">
                         <option value="newest"><?php esc_html_e( 'Nyeste', 'vupvup-qa' ); ?></option>
                         <option value="upvotes"><?php esc_html_e( 'Flest stemmer', 'vupvup-qa' ); ?></option>
