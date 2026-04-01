@@ -371,6 +371,12 @@
       card.dataset.status = q.status;
       card.querySelector('.vupvup-q-author').textContent = q.author;
       card.querySelector('.vupvup-q-time').textContent   = fmtTime(q.created_at);
+      const speakerEl = card.querySelector('.vupvup-q-speaker');
+      if (speakerEl) {
+        const sName = q.speaker_id ? (speakerNames[q.speaker_id] || '') : '';
+        speakerEl.textContent    = sName;
+        speakerEl.style.display  = sName ? '' : 'none';
+      }
       card.querySelector('.up-num').textContent          = q.upvotes;
       card.querySelector('.vupvup-q-text').textContent   = q.question;
 
