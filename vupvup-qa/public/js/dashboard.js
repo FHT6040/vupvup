@@ -343,7 +343,8 @@
         if (full) { qList.innerHTML = ''; rendered.clear(); highestId = 0; }
 
         let added = 0;
-        qs.forEach(q => {
+        const visible = currentSpeaker > 0 ? qs.filter(q => q.speaker_id === currentSpeaker) : qs;
+        visible.forEach(q => {
           if (!rendered.has(q.id)) {
             rendered.add(q.id);
             renderQ(q, full);
