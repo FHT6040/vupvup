@@ -436,14 +436,15 @@ class VupVup_QA_REST_API {
             : ( $q->guest_name  ?: __( 'Anonym', 'vupvup-qa' ) );
 
         return [
-            'id'         => (int) $q->id,
-            'event_id'   => (int) $q->event_id,
-            'author'     => $name,
-            'question'   => $q->question,
-            'status'     => $q->status,
-            'speaker_id' => $q->speaker_id ? (int) $q->speaker_id : null,
-            'upvotes'    => (int) $q->upvotes,
-            'created_at' => $q->created_at,
+            'id'          => (int) $q->id,
+            'event_id'    => (int) $q->event_id,
+            'author'      => $name,
+            'question'    => $q->question,
+            'status'      => $q->status,
+            'speaker_id'  => $q->speaker_id ? (int) $q->speaker_id : null,
+            'upvotes'     => (int) $q->upvotes,
+            'highlighted' => (bool) $q->highlighted,
+            'created_at'  => $q->created_at,
         ];
     }
 }
