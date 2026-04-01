@@ -106,6 +106,40 @@
                     </div>
                 </div>
             </div>
+
+            <?php
+            $speakers_raw = get_post_meta( $event_id, '_vupvup_event_speakers', true );
+            $slots = $speakers_raw
+                ? array_values( array_filter( array_map( 'trim', explode( "\n", $speakers_raw ) ) ) )
+                : [];
+            if ( $slots ) :
+            ?>
+            <div class="vupvup-sidebar-card">
+                <h3><?php esc_html_e( 'Aktiv taler', 'vupvup-qa' ); ?></h3>
+                <div class="vv-slot-btns" id="vv-slot-btns">
+                    <?php foreach ( $slots as $i => $slot ) : ?>
+                    <button class="vv-slot-btn" data-slot="<?php echo esc_attr( $i ); ?>">
+                        <?php echo esc_html( $slot ); ?>
+                    </button>
+                    <?php endforeach; ?>
+                    <button class="vv-slot-btn vv-slot-none" data-slot="-1">
+                        <?php esc_html_e( '— Ingen aktiv', 'vupvup-qa' ); ?>
+                    </button>
+                </div>
+            </div>
+            <?php endif; ?>
+
+            <div class="vupvup-sidebar-card">
+                <h3><?php esc_html_e( 'Storskærm visning', 'vupvup-qa' ); ?></h3>
+                <div class="vv-mode-btns" id="vv-mode-btns">
+                    <button class="vv-mode-btn active" data-mode="all">
+                        <?php esc_html_e( 'Alle godkendte', 'vupvup-qa' ); ?>
+                    </button>
+                    <button class="vv-mode-btn" data-mode="highlighted">
+                        <?php esc_html_e( 'Kun fremhævet', 'vupvup-qa' ); ?>
+                    </button>
+                </div>
+            </div>
         </aside>
 
         <!-- Right: Live question feed -->
