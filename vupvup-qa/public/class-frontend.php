@@ -210,11 +210,17 @@ class VupVup_QA_Frontend {
 
         wp_enqueue_style(  'vupvup-bigscreen', VUPVUP_QA_URL . 'public/css/bigscreen.css', [], VUPVUP_QA_VERSION );
         wp_enqueue_script( 'vupvup-bigscreen', VUPVUP_QA_URL . 'public/js/bigscreen.js',   [], VUPVUP_QA_VERSION, true );
+        $speakers_raw = get_post_meta( $event_id, '_vupvup_event_speakers', true );
+        $slots        = $speakers_raw
+            ? array_values( array_filter( array_map( 'trim', explode( "\n", $speakers_raw ) ) ) )
+            : [];
+
         wp_localize_script( 'vupvup-bigscreen', 'vupvupBig', [
             'restUrl'     => rest_url( 'vupvup-qa/v1' ),
             'nonce'       => wp_create_nonce( 'wp_rest' ),
             'eventId'     => $event_id,
             'eventStatus' => $status,
+            'slots'       => $slots,
         ] );
         include VUPVUP_QA_DIR . 'public/templates/bigscreen.php';
     }
