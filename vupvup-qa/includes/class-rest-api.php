@@ -287,6 +287,10 @@ class VupVup_QA_REST_API {
              LIMIT 100"
         );
 
+        foreach ( $questions as $q ) {
+            $q->highlighted = (bool) $q->highlighted;
+        }
+
         return new WP_REST_Response( $questions );
     }
 
