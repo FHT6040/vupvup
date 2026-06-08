@@ -170,27 +170,10 @@ class VupVup_QA_REST_API {
     }
 
     public function can_moderate_scene( WP_REST_Request $request ): bool|WP_Error {
-        global $wpdb;
-        if ( ! is_user_logged_in() ) {
-            return new WP_Error( 'forbidden', __( 'Adgang nægtet.', 'vupvup-qa' ), [ 'status' => 403 ] );
-        }
-        if ( current_user_can( 'vupvup_manage_all_events' ) ) {
+        $scene_id = (int) $request->get_param( 'scene_id' );
+        if ( VupVup_QA_Roles::can_moderate_scene( $scene_id ) ) {
             return true;
         }
-        $scene_id = (int) $request->get_param( 'scene_id' );
-        $scene    = $wpdb->get_row( $wpdb->prepare(
-            "SELECT * FROM {$wpdb->prefix}vupvup_scenes WHERE id = %d",
-            $scene_id
-        ) );
-        if ( ! $scene ) {
-            return new WP_Error( 'not_found', __( 'Scene ikke fundet.', 'vupvup-qa' ), [ 'status' => 404 ] );
-        }
-        $user_id = get_current_user_id();
-        if ( current_user_can( 'vupvup_manage_scenes' ) ) {
-            $org_id = (int) get_post_meta( (int) $scene->event_id, '_vupvup_facilitator_id', true );
-            if ( $org_id === $user_id ) return true;
-        }
-        if ( (int) $scene->facilitator_id === $user_id ) return true;
         return new WP_Error( 'forbidden', __( 'Adgang nægtet.', 'vupvup-qa' ), [ 'status' => 403 ] );
     }
 
