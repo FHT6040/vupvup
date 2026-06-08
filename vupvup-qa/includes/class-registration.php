@@ -100,6 +100,56 @@ class VupVup_QA_Registration {
         ], 201 );
     }
 
+    public function handle_register_organizer( WP_REST_Request $request ): WP_REST_Response|WP_Error {
+        $email      = $request->get_param( 'email' );
+        $password   = $request->get_param( 'password' );
+        $first_name = $request->get_param( 'first_name' );
+        $last_name  = $request->get_param( 'last_name' ) ?? '';
+        $company    = $request->get_param( 'company' ) ?? '';
+
+        if ( ! is_email( $email ) ) {
+            return new WP_Error( 'invalid_email', __( 'Ugyldig e-mailadresse.', 'vupvup-qa' ), [ 'status' => 400 ] );
+        }
+        if ( email_exists( $email ) ) {
+            return new WP_Error( 'email_exists', __( 'Der findes allerede en konto med denne e-mail.', 'vupvup-qa' ), [ 'status' => 400 ] );
+        }
+        if ( strlen( $password ) < 8 ) {
+            return new WP_Error( 'weak_password', __( 'Adgangskoden skal være mindst 8 tegn.', 'vupvup-qa' ), [ 'status' => 400 ] );
+        }
+
+        $username = sanitize_user( strstr( $email, '@', true ) . '_' . wp_generate_password( 4, false ) );
+        while ( username_exists( $username ) ) {
+            $username = sanitize_user( strstr( $email, '@', true ) . '_' . wp_generate_password( 4, false ) );
+        }
+
+        $user_id = wp_create_user( $username, $password, $email );
+        if ( is_wp_error( $user_id ) ) {
+            return $user_id;
+        }
+
+        wp_update_user( [
+            'ID'           => $user_id,
+            'first_name'   => $first_name,
+            'last_name'    => $last_name,
+            'display_name' => trim( $first_name . ' ' . $last_name ),
+            'role'         => 'event_organizer',
+        ] );
+
+        update_user_meta( $user_id, 'vupvup_company', $company );
+        update_user_meta( $user_id, 'vupvup_plan', 'free' );
+        update_user_meta( $user_id, 'vupvup_plan_since', current_time( 'mysql' ) );
+
+        wp_set_current_user( $user_id );
+        wp_set_auth_cookie( $user_id, true );
+
+        self::send_verification_email( $user_id );
+
+        return new WP_REST_Response( [
+            'success'      => true,
+            'redirect_url' => home_url( 'dashboard/' ),
+        ], 201 );
+    }
+
     public function handle_login( WP_REST_Request $request ): WP_REST_Response|WP_Error {
         $email    = $request->get_param( 'email' );
         $password = $request->get_param( 'password' );
