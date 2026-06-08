@@ -152,14 +152,106 @@ class VupVup_QA_Admin {
             }
         }
 
+        // Create scenes.
+        $scenes_input  = isset( $_POST['vupvup_scenes'] ) && is_array( $_POST['vupvup_scenes'] )
+            ? array_values( $_POST['vupvup_scenes'] )
+            : [];
+        $scenes_created = 0;
+
+        foreach ( $scenes_input as $idx => $raw_scene ) {
+            $scene_name = sanitize_text_field( $raw_scene['name'] ?? '' );
+            if ( ! $scene_name ) {
+                continue;
+            }
+
+            $fac_email     = sanitize_email( $raw_scene['facilitator_email'] ?? '' );
+            $fac_name      = sanitize_text_field( $raw_scene['facilitator_name'] ?? '' );
+            $facilitator_id = null;
+            $temp_password  = '';
+
+            if ( $fac_email && is_email( $fac_email ) ) {
+                $existing = get_user_by( 'email', $fac_email );
+                if ( $existing ) {
+                    $facilitator_id = $existing->ID;
+                } else {
+                    $uname = sanitize_user( strstr( $fac_email, '@', true ) . '_' . wp_generate_password( 4, false ) );
+                    while ( username_exists( $uname ) ) {
+                        $uname = sanitize_user( strstr( $fac_email, '@', true ) . '_' . wp_generate_password( 4, false ) );
+                    }
+                    $temp_password = wp_generate_password( 12, false );
+                    $new_uid       = wp_create_user( $uname, $temp_password, $fac_email );
+                    if ( ! is_wp_error( $new_uid ) ) {
+                        wp_update_user( [
+                            'ID'           => $new_uid,
+                            'display_name' => $fac_name ?: $uname,
+                            'role'         => 'event_facilitator',
+                        ] );
+                        $facilitator_id = $new_uid;
+                    }
+                }
+            }
+
+            $scene_token   = wp_generate_password( 12, false );
+            $scene_landing = home_url( 'qa/' . $scene_token . '/' );
+            $scene_qr_url  = VupVup_QA_QR_Code::generate( $scene_landing, $post_id ) ?? '';
+
+            $inserted = $wpdb->insert(
+                $wpdb->prefix . 'vupvup_scenes',
+                [
+                    'event_id'       => $post_id,
+                    'name'           => $scene_name,
+                    'facilitator_id' => $facilitator_id,
+                    'token'          => $scene_token,
+                    'qr_url'         => $scene_qr_url,
+                    'sort_order'     => $idx,
+                ],
+                [ '%d', '%s', '%d', '%s', '%s', '%d' ]
+            );
+
+            if ( $inserted && $facilitator_id && $temp_password ) {
+                $this->send_facilitator_welcome( $facilitator_id, $temp_password, $scene_name, $post_id );
+            }
+
+            $scenes_created++;
+        }
+
         set_transient(
             'vupvup_admin_notice_' . get_current_user_id(),
-            /* translators: 1: event title, 2: facilitator display name */
-            sprintf( __( 'Eventet "%1$s" er oprettet og tildelt %2$s.', 'vupvup-qa' ), $title, $facilitator->display_name ),
+            /* translators: 1: event title, 2: facilitator display name, 3: scene count */
+            sprintf(
+                _n(
+                    'Eventet "%1$s" er oprettet og tildelt %2$s med %3$d scene.',
+                    'Eventet "%1$s" er oprettet og tildelt %2$s med %3$d scener.',
+                    $scenes_created,
+                    'vupvup-qa'
+                ),
+                $title,
+                $facilitator->display_name,
+                $scenes_created
+            ),
             60
         );
         wp_redirect( admin_url( 'admin.php?page=vupvup-qa' ) );
         exit;
+    }
+
+    private function send_facilitator_welcome( int $user_id, string $password, string $scene_name, int $event_id ): void {
+        $user      = get_userdata( $user_id );
+        $event     = get_post( $event_id );
+        $site_name = get_bloginfo( 'name' );
+        $subject   = sprintf( __( 'Du er inviteret som facilitator — %s', 'vupvup-qa' ), $site_name );
+        $message   = sprintf(
+            /* translators: 1: name, 2: event title, 3: scene name, 4: email, 5: password, 6: login URL, 7: site name */
+            __( "Hej %1\$s,\n\nDu er tilføjet som facilitator for scenen \"%3\$s\" til eventet \"%2\$s\".\n\nDine loginoplysninger:\nE-mail: %4\$s\nMidlertidig adgangskode: %5\$s\n\nLog ind her: %6\$s\n\nSkift venligst din adgangskode efter første login.\n\nMed venlig hilsen\n%7\$s", 'vupvup-qa' ),
+            $user->display_name ?: $user->user_email,
+            $event->post_title,
+            $scene_name,
+            $user->user_email,
+            $password,
+            home_url( 'login/' ),
+            $site_name
+        );
+        wp_mail( $user->user_email, $subject, $message );
     }
 
     public function show_admin_notices(): void {
