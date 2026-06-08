@@ -41,6 +41,44 @@
     });
   }
 
+  // ─── Register organizer form ─────────────────────────────────────────────────
+  const regOrgForm   = document.getElementById('vupvup-register-organizer-form');
+  const regOrgError  = document.getElementById('vupvup-reg-organizer-error');
+  const regOrgSubmit = document.getElementById('vupvup-reg-organizer-submit');
+
+  if (regOrgForm) {
+    regOrgForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      hideEl(regOrgError);
+      regOrgSubmit.disabled = true;
+      regOrgSubmit.textContent = 'Opretter konto…';
+
+      const body = {
+        first_name: regOrgForm.first_name.value.trim(),
+        last_name:  regOrgForm.last_name.value.trim(),
+        company:    regOrgForm.company.value.trim(),
+        email:      regOrgForm.email.value.trim(),
+        password:   regOrgForm.password.value,
+      };
+
+      try {
+        const res  = await post(`${d.restUrl}/register/organizer`, body);
+        const json = await res.json();
+        if (res.ok && json.success) {
+          window.location.href = json.redirect_url;
+        } else {
+          showError(regOrgError, json.message || 'Noget gik galt.');
+          regOrgSubmit.disabled = false;
+          regOrgSubmit.textContent = 'Opret arrangørkonto';
+        }
+      } catch {
+        showError(regOrgError, 'Netværksfejl. Prøv igen.');
+        regOrgSubmit.disabled = false;
+        regOrgSubmit.textContent = 'Opret arrangørkonto';
+      }
+    });
+  }
+
   // ─── Login form ──────────────────────────────────────────────────────────────
   const loginForm   = document.getElementById('vupvup-login-form');
   const loginError  = document.getElementById('vupvup-login-error');
