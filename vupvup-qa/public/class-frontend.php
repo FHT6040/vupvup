@@ -79,6 +79,14 @@ class VupVup_QA_Frontend {
         include VUPVUP_QA_DIR . 'public/templates/register.php';
     }
 
+    private function render_register_organizer(): void {
+        if ( is_user_logged_in() ) {
+            wp_redirect( home_url( 'dashboard/' ) ); exit;
+        }
+        $this->enqueue_dashboard_assets();
+        include VUPVUP_QA_DIR . 'public/templates/register-organizer.php';
+    }
+
     private function render_login(): void {
         if ( is_user_logged_in() ) {
             wp_redirect( home_url( 'dashboard/' ) ); exit;
