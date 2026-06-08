@@ -35,8 +35,9 @@ class VupVup_QA_Admin {
             'vupvup-qa',
             __( 'Nyt Event', 'vupvup-qa' ),
             __( 'Nyt Event', 'vupvup-qa' ),
-            'vupvup_manage_own_events',
-            'post-new.php?post_type=event_qna'
+            'vupvup_manage_all_events',
+            'vupvup-new-event',
+            [ $this, 'render_new_event_page' ]
         );
 
     }
