@@ -519,6 +519,142 @@ class VupVup_QA_REST_API {
         return new WP_REST_Response( [ 'success' => true, 'active_slot' => $slot_index ] );
     }
 
+    public function get_scenes( WP_REST_Request $request ): WP_REST_Response {
+        global $wpdb;
+        $event_id = (int) $request->get_param( 'event_id' );
+        $scenes   = $wpdb->get_results( $wpdb->prepare(
+            "SELECT s.id, s.name, s.token, s.qr_url, s.facilitator_id, u.display_name AS facilitator_name
+             FROM {$wpdb->prefix}vupvup_scenes s
+             LEFT JOIN {$wpdb->users} u ON s.facilitator_id = u.ID
+             WHERE s.event_id = %d
+             ORDER BY s.sort_order ASC, s.id ASC",
+            $event_id
+        ) );
+        return new WP_REST_Response( array_map( function ( $s ) {
+            return [
+                'id'               => (int) $s->id,
+                'name'             => $s->name,
+                'qr_url'           => $s->qr_url ?: '',
+                'facilitator_id'   => $s->facilitator_id ? (int) $s->facilitator_id : null,
+                'facilitator_name' => $s->facilitator_name ?: '',
+                'dashboard_url'    => home_url( 'dashboard/scene/' . $s->id . '/' ),
+            ];
+        }, $scenes ) );
+    }
+
+    public function create_scene( WP_REST_Request $request ): WP_REST_Response|WP_Error {
+        global $wpdb;
+        $event_id          = (int) $request->get_param( 'event_id' );
+        $name              = $request->get_param( 'name' );
+        $facilitator_email = $request->get_param( 'facilitator_email' ) ?: '';
+
+        $facilitator_id = null;
+        if ( $facilitator_email ) {
+            $user = get_user_by( 'email', $facilitator_email );
+            if ( ! $user ) {
+                return new WP_Error( 'user_not_found', __( 'Ingen bruger fundet med denne e-mailadresse.', 'vupvup-qa' ), [ 'status' => 404 ] );
+            }
+            $facilitator_id = (int) $user->ID;
+        }
+
+        $token  = wp_generate_password( 12, false );
+        $qr_url = VupVup_QA_QR_Code::generate( home_url( 'qa/' . $token . '/' ), $event_id );
+
+        $data    = [ 'event_id' => $event_id, 'name' => $name, 'token' => $token, 'sort_order' => 0, 'created_at' => current_time( 'mysql' ) ];
+        $formats = [ '%d', '%s', '%s', '%d', '%s' ];
+        if ( $qr_url ) { $data['qr_url'] = $qr_url; $formats[] = '%s'; }
+        if ( $facilitator_id !== null ) { $data['facilitator_id'] = $facilitator_id; $formats[] = '%d'; }
+
+        if ( ! $wpdb->insert( $wpdb->prefix . 'vupvup_scenes', $data, $formats ) ) {
+            return new WP_Error( 'db_error', __( 'Scenen kunne ikke oprettes.', 'vupvup-qa' ), [ 'status' => 500 ] );
+        }
+
+        $scene_id         = $wpdb->insert_id;
+        $facilitator_name = $facilitator_id ? ( get_user_by( 'id', $facilitator_id )->display_name ?? '' ) : '';
+
+        return new WP_REST_Response( [
+            'id'               => $scene_id,
+            'name'             => $name,
+            'qr_url'           => $qr_url ?: '',
+            'facilitator_id'   => $facilitator_id,
+            'facilitator_name' => $facilitator_name,
+            'dashboard_url'    => home_url( 'dashboard/scene/' . $scene_id . '/' ),
+        ], 201 );
+    }
+
+    public function delete_scene( WP_REST_Request $request ): WP_REST_Response {
+        global $wpdb;
+        $wpdb->delete( $wpdb->prefix . 'vupvup_scenes', [ 'id' => (int) $request->get_param( 'scene_id' ) ], [ '%d' ] );
+        return new WP_REST_Response( [ 'success' => true ] );
+    }
+
+    public function create_facilitator( WP_REST_Request $request ): WP_REST_Response|WP_Error {
+        $email      = $request->get_param( 'email' );
+        $password   = $request->get_param( 'password' );
+        $first_name = $request->get_param( 'first_name' );
+        $last_name  = $request->get_param( 'last_name' ) ?? '';
+
+        if ( ! is_email( $email ) ) {
+            return new WP_Error( 'invalid_email', __( 'Ugyldig e-mailadresse.', 'vupvup-qa' ), [ 'status' => 400 ] );
+        }
+        if ( email_exists( $email ) ) {
+            return new WP_Error( 'email_exists', __( 'Der findes allerede en konto med denne e-mail.', 'vupvup-qa' ), [ 'status' => 400 ] );
+        }
+        if ( strlen( $password ) < 8 ) {
+            return new WP_Error( 'weak_password', __( 'Adgangskoden skal være mindst 8 tegn.', 'vupvup-qa' ), [ 'status' => 400 ] );
+        }
+
+        $username = sanitize_user( strstr( $email, '@', true ) . '_' . wp_generate_password( 4, false ) );
+        while ( username_exists( $username ) ) {
+            $username = sanitize_user( strstr( $email, '@', true ) . '_' . wp_generate_password( 4, false ) );
+        }
+
+        $user_id = wp_create_user( $username, $password, $email );
+        if ( is_wp_error( $user_id ) ) {
+            return $user_id;
+        }
+
+        wp_update_user( [
+            'ID'           => $user_id,
+            'first_name'   => $first_name,
+            'last_name'    => $last_name,
+            'display_name' => trim( $first_name . ' ' . $last_name ),
+            'role'         => 'event_facilitator',
+        ] );
+
+        return new WP_REST_Response( [
+            'id'           => $user_id,
+            'display_name' => trim( $first_name . ' ' . $last_name ),
+            'email'        => $email,
+        ], 201 );
+    }
+
+    public function can_delete_scene( WP_REST_Request $request ): bool|WP_Error {
+        global $wpdb;
+        $scene_id = (int) $request->get_param( 'scene_id' );
+        $event_id = (int) $wpdb->get_var( $wpdb->prepare(
+            "SELECT event_id FROM {$wpdb->prefix}vupvup_scenes WHERE id = %d",
+            $scene_id
+        ) );
+        if ( ! $event_id ) {
+            return new WP_Error( 'not_found', __( 'Scene ikke fundet.', 'vupvup-qa' ), [ 'status' => 404 ] );
+        }
+        if ( ! VupVup_QA_Roles::can_moderate( $event_id ) ) {
+            return new WP_Error( 'forbidden', __( 'Adgang nægtet.', 'vupvup-qa' ), [ 'status' => 403 ] );
+        }
+        return true;
+    }
+
+    public function can_manage_facilitators(): bool|WP_Error {
+        if ( ! is_user_logged_in() ) {
+            return new WP_Error( 'forbidden', __( 'Adgang nægtet.', 'vupvup-qa' ), [ 'status' => 403 ] );
+        }
+        if ( current_user_can( 'vupvup_manage_scenes' ) || current_user_can( 'vupvup_manage_all_events' ) ) {
+            return true;
+        }
+        return new WP_Error( 'forbidden', __( 'Adgang nægtet.', 'vupvup-qa' ), [ 'status' => 403 ] );
+    }
+
     // ---------------------------------------------------------------------------
     // Helpers
     // ---------------------------------------------------------------------------
