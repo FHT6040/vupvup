@@ -16,6 +16,18 @@ class VupVup_QA_Roles {
         );
 
         add_role(
+            'event_organizer',
+            __( 'Event Organizer', 'vupvup-qa' ),
+            [
+                'read'                      => true,
+                'vupvup_manage_own_events'  => true,
+                'vupvup_manage_scenes'      => true,
+                'vupvup_view_all_scenes'    => true,
+                'vupvup_view_dashboard'     => true,
+            ]
+        );
+
+        add_role(
             'event_participant',
             __( 'Event Participant', 'vupvup-qa' ),
             [
@@ -31,6 +43,8 @@ class VupVup_QA_Roles {
             if ( $role ) {
                 $role->add_cap( 'vupvup_manage_own_events' );
                 $role->add_cap( 'vupvup_manage_all_events' );
+                $role->add_cap( 'vupvup_manage_scenes' );
+                $role->add_cap( 'vupvup_view_all_scenes' );
                 $role->add_cap( 'vupvup_moderate_questions' );
                 $role->add_cap( 'vupvup_view_dashboard' );
                 $role->add_cap( 'vupvup_submit_question' );
