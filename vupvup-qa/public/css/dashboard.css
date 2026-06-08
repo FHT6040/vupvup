@@ -369,6 +369,28 @@ body.vupvup-dash-body {
   box-shadow: 0 0 0 2px rgba(245,158,11,.2);
 }
 
+/* ── SCENE MANAGEMENT ──────────────────────────────────────────── */
+.vupvup-scenes-section { margin-top: 0; border-top: 2px solid var(--vv-border); padding-top: 32px; }
+.vupvup-scenes-section h2 { font-size: 1.2rem; font-weight: 700; }
+.vupvup-scenes-section h3 {
+  font-size: .85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .07em; color: var(--vv-muted); margin-bottom: 12px;
+}
+.vv-scene-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+.vv-scene-row {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  background: var(--vv-card); border: 1.5px solid var(--vv-border);
+  border-radius: var(--vv-radius); padding: 12px 16px;
+}
+.vv-scene-name { font-weight: 600; flex: 1 1 120px; }
+.vv-scene-fac  { font-size: .85rem; color: var(--vv-muted); flex: 1 1 160px; }
+.vv-muted      { color: var(--vv-muted); font-size: .9rem; padding: 8px 0; }
+.vv-add-scene-form {
+  background: var(--vv-card); border: 1.5px solid var(--vv-border);
+  border-radius: var(--vv-radius); padding: 20px; margin-bottom: 16px;
+}
+.vv-section-divider { border: none; border-top: 1.5px solid var(--vv-border); margin: 8px 0 20px; }
+
 @media (max-width: 600px) {
   .vupvup-auth-card { padding: 28px 20px; }
   .vupvup-form-row  { flex-direction: column; }
