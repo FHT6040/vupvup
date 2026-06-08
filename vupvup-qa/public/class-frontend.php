@@ -27,6 +27,9 @@ class VupVup_QA_Frontend {
         add_rewrite_rule( '^login/?$',    'index.php?vupvup_page=login',    'top' );
         add_rewrite_rule( '^verify/?$',   'index.php?vupvup_page=verify',   'top' );
 
+        // Scene dashboard
+        add_rewrite_rule( '^dashboard/scene/([0-9]+)/?$', 'index.php?vupvup_page=scene-live&vupvup_scene_id=$matches[1]', 'top' );
+
         // Dashboard
         add_rewrite_rule( '^dashboard/?$',                        'index.php?vupvup_page=dashboard',      'top' );
         add_rewrite_rule( '^dashboard/event/ny/?$',               'index.php?vupvup_page=event-new',      'top' );
