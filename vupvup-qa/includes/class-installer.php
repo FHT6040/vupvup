@@ -27,12 +27,16 @@ class VupVup_QA_Installer {
     public static function create_tables(): void {
         global $wpdb;
 
-        $charset_collate = $wpdb->get_charset_collate();
-        $table           = $wpdb->prefix . 'vupvup_questions';
+        $charset_collate  = $wpdb->get_charset_collate();
+        $questions_table  = $wpdb->prefix . 'vupvup_questions';
+        $scenes_table     = $wpdb->prefix . 'vupvup_scenes';
 
-        $sql = "CREATE TABLE {$table} (
+        $queries = [];
+
+        $queries[] = "CREATE TABLE {$questions_table} (
             id          BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
             event_id    BIGINT UNSIGNED NOT NULL,
+            scene_id    BIGINT UNSIGNED DEFAULT NULL,
             author_id   BIGINT UNSIGNED NOT NULL DEFAULT 0,
             guest_name  VARCHAR(100)    DEFAULT NULL,
             question    TEXT            NOT NULL,
@@ -44,13 +48,28 @@ class VupVup_QA_Installer {
             created_at  DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (id),
             KEY event_id    (event_id),
+            KEY scene_id    (scene_id),
             KEY status      (status),
             KEY highlighted (highlighted),
             KEY created_at  (created_at)
         ) {$charset_collate};";
 
+        $queries[] = "CREATE TABLE {$scenes_table} (
+            id             BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+            event_id       BIGINT UNSIGNED NOT NULL,
+            name           VARCHAR(255)    NOT NULL,
+            facilitator_id BIGINT UNSIGNED DEFAULT NULL,
+            token          VARCHAR(32)     NOT NULL DEFAULT '',
+            qr_url         VARCHAR(500)    DEFAULT NULL,
+            sort_order     TINYINT UNSIGNED NOT NULL DEFAULT 0,
+            created_at     DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (id),
+            KEY event_id   (event_id),
+            KEY token      (token)
+        ) {$charset_collate};";
+
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-        dbDelta( $sql );
+        dbDelta( $queries );
     }
 
     /**
