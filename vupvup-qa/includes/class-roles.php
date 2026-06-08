@@ -112,6 +112,34 @@ class VupVup_QA_Roles {
     }
 
     /**
+     * Check if current user can moderate questions for a given scene.
+     */
+    public static function can_moderate_scene( int $scene_id ): bool {
+        global $wpdb;
+        if ( ! is_user_logged_in() ) {
+            return false;
+        }
+        if ( current_user_can( 'vupvup_manage_all_events' ) ) {
+            return true;
+        }
+        $scene = $wpdb->get_row( $wpdb->prepare(
+            "SELECT event_id, facilitator_id FROM {$wpdb->prefix}vupvup_scenes WHERE id = %d",
+            $scene_id
+        ) );
+        if ( ! $scene ) {
+            return false;
+        }
+        $user_id = get_current_user_id();
+        if ( current_user_can( 'vupvup_manage_scenes' ) ) {
+            $org_id = (int) get_post_meta( (int) $scene->event_id, '_vupvup_facilitator_id', true );
+            if ( $org_id === $user_id ) {
+                return true;
+            }
+        }
+        return (int) $scene->facilitator_id === $user_id;
+    }
+
+    /**
      * Check if current user can submit a question.
      */
     public static function can_submit_question( int $event_id ): bool {
