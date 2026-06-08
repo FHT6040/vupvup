@@ -22,6 +22,7 @@ class VupVup_QA_Frontend {
         add_rewrite_rule( '^qa/([a-zA-Z0-9_-]+)/?$',           'index.php?vupvup_event_token=$matches[1]', 'top' );
 
         // Auth
+        add_rewrite_rule( '^register/organizer/?$', 'index.php?vupvup_page=register-organizer', 'top' );
         add_rewrite_rule( '^register/?$', 'index.php?vupvup_page=register', 'top' );
         add_rewrite_rule( '^login/?$',    'index.php?vupvup_page=login',    'top' );
         add_rewrite_rule( '^verify/?$',   'index.php?vupvup_page=verify',   'top' );
