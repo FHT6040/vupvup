@@ -303,6 +303,41 @@ class VupVup_QA_REST_API {
         return new WP_REST_Response( array_map( [ $this, 'format_question' ], $questions ) );
     }
 
+    public function get_scene_questions( WP_REST_Request $request ): WP_REST_Response {
+        global $wpdb;
+
+        $scene_id = (int) $request->get_param( 'scene_id' );
+        $status   = $request->get_param( 'status' );
+        $orderby  = $request->get_param( 'orderby' );
+        $since_id = (int) $request->get_param( 'since_id' );
+
+        $where = $wpdb->prepare( 'WHERE scene_id = %d', $scene_id );
+
+        if ( $status !== 'all' ) {
+            $where .= $wpdb->prepare( ' AND status = %s', $status );
+        }
+        if ( $since_id > 0 ) {
+            $where .= $wpdb->prepare( ' AND id > %d', $since_id );
+        }
+
+        $order = match ( $orderby ) {
+            'upvotes' => 'upvotes DESC, created_at DESC',
+            'oldest'  => 'created_at ASC',
+            default   => 'created_at DESC',
+        };
+
+        $questions = $wpdb->get_results(
+            "SELECT q.*, u.display_name as author_name
+             FROM {$wpdb->prefix}vupvup_questions q
+             LEFT JOIN {$wpdb->users} u ON q.author_id = u.ID
+             {$where}
+             ORDER BY {$order}
+             LIMIT 200"
+        );
+
+        return new WP_REST_Response( array_map( [ $this, 'format_question' ], $questions ) );
+    }
+
     public function get_feed( WP_REST_Request $request ): WP_REST_Response {
         global $wpdb;
 
