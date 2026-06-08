@@ -379,7 +379,7 @@ class VupVup_QA_Frontend {
 
     // ── Assets ─────────────────────────────────────────────────────────────────
 
-    private function enqueue_dashboard_assets( int $event_id = 0 ): void {
+    private function enqueue_dashboard_assets( int $event_id = 0, int $scene_id = 0 ): void {
         wp_enqueue_style(  'vupvup-dashboard', VUPVUP_QA_URL . 'public/css/dashboard.css', [], VUPVUP_QA_VERSION );
         wp_enqueue_script( 'vupvup-dashboard', VUPVUP_QA_URL . 'public/js/dashboard.js',   [], VUPVUP_QA_VERSION, true );
         $speakers_raw = $event_id ? get_post_meta( $event_id, '_vupvup_event_speakers', true ) : '';
@@ -391,6 +391,7 @@ class VupVup_QA_Frontend {
             'nonce'    => wp_create_nonce( 'wp_rest' ),
             'ajaxUrl'  => admin_url( 'admin-ajax.php' ),
             'eventId'  => $event_id,
+            'sceneId'  => $scene_id,
             'speakers' => $speakers,
         ] );
     }
