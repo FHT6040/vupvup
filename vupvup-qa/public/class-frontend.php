@@ -152,14 +152,8 @@ class VupVup_QA_Frontend {
         if ( ! $scene ) { wp_redirect( home_url( 'dashboard/' ) ); exit; }
 
         $event_id = (int) $scene->event_id;
-        $user_id  = get_current_user_id();
 
-        $is_admin       = current_user_can( 'vupvup_manage_all_events' );
-        $is_organizer   = current_user_can( 'vupvup_manage_scenes' )
-                          && (int) get_post_meta( $event_id, '_vupvup_facilitator_id', true ) === $user_id;
-        $is_facilitator = (int) $scene->facilitator_id === $user_id;
-
-        if ( ! $is_admin && ! $is_organizer && ! $is_facilitator ) {
+        if ( ! VupVup_QA_Roles::can_moderate_scene( $scene_id ) ) {
             wp_redirect( home_url( 'dashboard/' ) ); exit;
         }
 
