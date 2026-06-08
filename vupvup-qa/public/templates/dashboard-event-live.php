@@ -202,6 +202,76 @@
     </div>
 </template>
 
+<?php if ( current_user_can( 'vupvup_manage_scenes' ) || current_user_can( 'vupvup_manage_all_events' ) ) : ?>
+<div class="vupvup-dash-wrap vupvup-scenes-section">
+
+    <div class="vupvup-dash-header">
+        <h2><?php esc_html_e( 'Scener', 'vupvup-qa' ); ?></h2>
+    </div>
+
+    <div id="vv-scene-error" class="vupvup-notice vupvup-notice-error vupvup-hidden"></div>
+
+    <div id="vv-scene-list" class="vv-scene-list">
+        <p class="vv-muted"><?php esc_html_e( 'Indlæser…', 'vupvup-qa' ); ?></p>
+    </div>
+
+    <form id="vv-add-scene-form" class="vv-add-scene-form" novalidate>
+        <h3><?php esc_html_e( 'Tilføj scene', 'vupvup-qa' ); ?></h3>
+        <div class="vupvup-form-row vupvup-form-row-split">
+            <div class="vupvup-field">
+                <label for="vv-scene-name"><?php esc_html_e( 'Scenens navn', 'vupvup-qa' ); ?> *</label>
+                <input type="text" id="vv-scene-name" class="vupvup-input"
+                       placeholder="<?php esc_attr_e( 'f.eks. Sal A', 'vupvup-qa' ); ?>" required>
+            </div>
+            <div class="vupvup-field">
+                <label for="vv-facilitator-email"><?php esc_html_e( 'Facilitators e-mail (valgfrit)', 'vupvup-qa' ); ?></label>
+                <input type="email" id="vv-facilitator-email" class="vupvup-input"
+                       placeholder="<?php esc_attr_e( 'facilitator@eksempel.dk', 'vupvup-qa' ); ?>">
+            </div>
+        </div>
+        <div class="vupvup-form-actions">
+            <button type="submit" id="vv-add-scene-btn" class="vupvup-btn vupvup-btn-primary">
+                + <?php esc_html_e( 'Opret scene', 'vupvup-qa' ); ?>
+            </button>
+        </div>
+    </form>
+
+    <hr class="vv-section-divider">
+
+    <form id="vv-add-facilitator-form" class="vv-add-scene-form" novalidate>
+        <h3><?php esc_html_e( 'Opret facilitator-konto', 'vupvup-qa' ); ?></h3>
+        <div id="vv-facilitator-error" class="vupvup-notice vupvup-notice-error vupvup-hidden"></div>
+        <div id="vv-facilitator-success" class="vupvup-notice vupvup-notice-success vupvup-hidden"></div>
+        <div class="vupvup-form-row vupvup-form-row-split">
+            <div class="vupvup-field">
+                <label for="vv-fac-first"><?php esc_html_e( 'Fornavn', 'vupvup-qa' ); ?> *</label>
+                <input type="text" id="vv-fac-first" class="vupvup-input" required>
+            </div>
+            <div class="vupvup-field">
+                <label for="vv-fac-last"><?php esc_html_e( 'Efternavn', 'vupvup-qa' ); ?></label>
+                <input type="text" id="vv-fac-last" class="vupvup-input">
+            </div>
+        </div>
+        <div class="vupvup-form-row vupvup-form-row-split">
+            <div class="vupvup-field">
+                <label for="vv-fac-email"><?php esc_html_e( 'E-mail', 'vupvup-qa' ); ?> *</label>
+                <input type="email" id="vv-fac-email" class="vupvup-input" required>
+            </div>
+            <div class="vupvup-field">
+                <label for="vv-fac-pass"><?php esc_html_e( 'Adgangskode', 'vupvup-qa' ); ?> *</label>
+                <input type="password" id="vv-fac-pass" class="vupvup-input" required>
+            </div>
+        </div>
+        <div class="vupvup-form-actions">
+            <button type="submit" id="vv-add-facilitator-btn" class="vupvup-btn vupvup-btn-ghost">
+                + <?php esc_html_e( 'Opret facilitator', 'vupvup-qa' ); ?>
+            </button>
+        </div>
+    </form>
+
+</div>
+<?php endif; ?>
+
 <?php wp_footer(); ?>
 </body>
 </html>
