@@ -63,7 +63,7 @@
                             <?php esc_html_e( 'Rediger', 'vupvup-qa' ); ?>
                         </a>
                         |
-                        <a href="<?php echo esc_url( admin_url( 'admin.php?page=vupvup-dashboard&event_id=' . $event->ID ) ); ?>">
+                        <a href="<?php echo esc_url( home_url( 'dashboard/event/' . $event->ID . '/' ) ); ?>">
                             <?php esc_html_e( 'Dashboard', 'vupvup-qa' ); ?>
                         </a>
                         <?php if ( $landing ) : ?>
