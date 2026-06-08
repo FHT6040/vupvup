@@ -65,11 +65,12 @@ class VupVup_QA_Roles {
             return;
         }
         $user = wp_get_current_user();
-        $vupvup_roles = [ 'event_facilitator', 'event_participant' ];
+        $vupvup_roles = [ 'event_facilitator', 'event_organizer', 'event_participant' ];
         if ( empty( array_intersect( $vupvup_roles, (array) $user->roles ) ) ) {
             return;
         }
-        if ( in_array( 'event_facilitator', (array) $user->roles, true ) ) {
+        $dashboard_roles = [ 'event_facilitator', 'event_organizer' ];
+        if ( ! empty( array_intersect( $dashboard_roles, (array) $user->roles ) ) ) {
             wp_safe_redirect( home_url( 'dashboard/' ) );
         } else {
             wp_safe_redirect( home_url( '/' ) );
