@@ -99,6 +99,102 @@ $error_messages = [
             </tr>
         </table>
 
+        <h2 style="margin-top:2em;"><?php esc_html_e( 'Scener', 'vupvup-qa' ); ?></h2>
+        <p class="description" style="margin-bottom:1em;">
+            <?php esc_html_e( 'Tilføj én eller flere scener. Hver scene får sin egen Q&A-strøm, et unikt deltagerlink og en dedikeret facilitator.', 'vupvup-qa' ); ?>
+        </p>
+
+        <div id="vupvup-scenes-list">
+            <div class="vupvup-scene-row" style="border:1px solid #ddd;padding:1em;margin-bottom:1em;border-radius:4px;">
+                <table class="form-table" style="margin:0;">
+                    <tr>
+                        <th style="width:200px;"><label><?php esc_html_e( 'Scene-navn', 'vupvup-qa' ); ?> <span aria-hidden="true">*</span></label></th>
+                        <td><input type="text" name="vupvup_scenes[0][name]" class="regular-text"
+                                   placeholder="<?php esc_attr_e( 'F.eks. Plenum', 'vupvup-qa' ); ?>"></td>
+                    </tr>
+                    <tr>
+                        <th><label><?php esc_html_e( 'Facilitator navn', 'vupvup-qa' ); ?></label></th>
+                        <td><input type="text" name="vupvup_scenes[0][facilitator_name]" class="regular-text"
+                                   placeholder="<?php esc_attr_e( 'F.eks. Anna Nielsen', 'vupvup-qa' ); ?>"></td>
+                    </tr>
+                    <tr>
+                        <th><label><?php esc_html_e( 'Facilitator e-mail', 'vupvup-qa' ); ?></label></th>
+                        <td>
+                            <input type="email" name="vupvup_scenes[0][facilitator_email]" class="regular-text"
+                                   placeholder="anna@virksomhed.dk">
+                            <p class="description"><?php esc_html_e( 'Ny konto oprettes automatisk og facilitatoren modtager velkomstmail med login.', 'vupvup-qa' ); ?></p>
+                        </td>
+                    </tr>
+                </table>
+                <button type="button" class="button vupvup-remove-scene" disabled style="margin-top:.5em;">
+                    <?php esc_html_e( 'Fjern scene', 'vupvup-qa' ); ?>
+                </button>
+            </div>
+        </div>
+
+        <button type="button" id="vupvup-add-scene" class="button" style="margin-bottom:1.5em;">
+            + <?php esc_html_e( 'Tilføj scene', 'vupvup-qa' ); ?>
+        </button>
+
+        <template id="vupvup-scene-template">
+            <div class="vupvup-scene-row" style="border:1px solid #ddd;padding:1em;margin-bottom:1em;border-radius:4px;">
+                <table class="form-table" style="margin:0;">
+                    <tr>
+                        <th style="width:200px;"><label><?php esc_html_e( 'Scene-navn', 'vupvup-qa' ); ?> <span aria-hidden="true">*</span></label></th>
+                        <td><input type="text" name="vupvup_scenes[__INDEX__][name]" class="regular-text"
+                                   placeholder="<?php esc_attr_e( 'F.eks. Sal B', 'vupvup-qa' ); ?>"></td>
+                    </tr>
+                    <tr>
+                        <th><label><?php esc_html_e( 'Facilitator navn', 'vupvup-qa' ); ?></label></th>
+                        <td><input type="text" name="vupvup_scenes[__INDEX__][facilitator_name]" class="regular-text"
+                                   placeholder="<?php esc_attr_e( 'F.eks. Bo Sørensen', 'vupvup-qa' ); ?>"></td>
+                    </tr>
+                    <tr>
+                        <th><label><?php esc_html_e( 'Facilitator e-mail', 'vupvup-qa' ); ?></label></th>
+                        <td>
+                            <input type="email" name="vupvup_scenes[__INDEX__][facilitator_email]" class="regular-text"
+                                   placeholder="bo@virksomhed.dk">
+                            <p class="description"><?php esc_html_e( 'Ny konto oprettes automatisk og facilitatoren modtager velkomstmail med login.', 'vupvup-qa' ); ?></p>
+                        </td>
+                    </tr>
+                </table>
+                <button type="button" class="button vupvup-remove-scene" style="margin-top:.5em;">
+                    <?php esc_html_e( 'Fjern scene', 'vupvup-qa' ); ?>
+                </button>
+            </div>
+        </template>
+
         <?php submit_button( __( 'Opret event', 'vupvup-qa' ) ); ?>
     </form>
 </div>
+
+<script>
+(function () {
+    var list     = document.getElementById('vupvup-scenes-list');
+    var tmpl     = document.getElementById('vupvup-scene-template');
+    var addBtn   = document.getElementById('vupvup-add-scene');
+    var counter  = list.querySelectorAll('.vupvup-scene-row').length;
+
+    addBtn.addEventListener('click', function () {
+        var html = tmpl.innerHTML.replace(/__INDEX__/g, counter++);
+        var wrap = document.createElement('div');
+        wrap.innerHTML = html;
+        list.appendChild(wrap.firstElementChild);
+        syncRemoveButtons();
+    });
+
+    list.addEventListener('click', function (e) {
+        if (e.target.classList.contains('vupvup-remove-scene')) {
+            e.target.closest('.vupvup-scene-row').remove();
+            syncRemoveButtons();
+        }
+    });
+
+    function syncRemoveButtons() {
+        var rows = list.querySelectorAll('.vupvup-scene-row');
+        rows.forEach(function (row) {
+            row.querySelector('.vupvup-remove-scene').disabled = (rows.length <= 1);
+        });
+    }
+}());
+</script>
