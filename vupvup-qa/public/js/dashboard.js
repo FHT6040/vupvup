@@ -368,7 +368,10 @@
     }
 
     async function loadQuestions(full = false) {
-      const url = new URL(`${d.restUrl}/events/${d.eventId}/questions`);
+      const base = d.sceneId
+        ? `${d.restUrl}/scenes/${d.sceneId}/questions`
+        : `${d.restUrl}/events/${d.eventId}/questions`;
+      const url = new URL(base);
       url.searchParams.set('status',   currentFilter);
       url.searchParams.set('orderby',  currentSort);
       url.searchParams.set('since_id', full ? 0 : highestId);
