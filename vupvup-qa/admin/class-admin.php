@@ -45,6 +45,7 @@ class VupVup_QA_Admin {
     public function enqueue_scripts( string $hook ): void {
         $allowed_hooks = [
             'toplevel_page_vupvup-qa',
+            'vupvup-qa_page_vupvup-new-event',
             'event_qna',
             'post.php',
             'post-new.php',
