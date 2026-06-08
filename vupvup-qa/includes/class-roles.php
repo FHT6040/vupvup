@@ -104,11 +104,12 @@ class VupVup_QA_Roles {
         if ( current_user_can( 'vupvup_manage_all_events' ) ) {
             return true;
         }
-        if ( ! current_user_can( 'vupvup_moderate_questions' ) ) {
+        $facilitator_id = (int) get_post_meta( $event_id, '_vupvup_facilitator_id', true );
+        if ( $facilitator_id !== get_current_user_id() ) {
             return false;
         }
-        $facilitator_id = (int) get_post_meta( $event_id, '_vupvup_facilitator_id', true );
-        return $facilitator_id === get_current_user_id();
+        return current_user_can( 'vupvup_moderate_questions' )
+            || current_user_can( 'vupvup_manage_own_events' );
     }
 
     /**
