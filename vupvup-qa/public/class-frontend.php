@@ -41,6 +41,7 @@ class VupVup_QA_Frontend {
         $vars[] = 'vupvup_event_token';
         $vars[] = 'vupvup_page';
         $vars[] = 'vupvup_event_id';
+        $vars[] = 'vupvup_scene_id';
         return $vars;
     }
 
