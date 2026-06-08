@@ -7,6 +7,8 @@ class VupVup_QA_Admin {
         add_action( 'admin_menu', [ $this, 'register_menus' ] );
         add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
         add_action( 'wp_ajax_vupvup_regenerate_qr', [ $this, 'ajax_regenerate_qr' ] );
+        add_action( 'admin_post_vupvup_new_event', [ $this, 'handle_new_event_form' ] );
+        add_action( 'admin_notices', [ $this, 'show_admin_notices' ] );
     }
 
     public function register_menus(): void {
