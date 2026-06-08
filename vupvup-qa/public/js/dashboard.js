@@ -730,5 +730,6 @@
   function fmtTime(str)        { return str ? new Date(str.replace(' ','T')).toLocaleTimeString('da-DK', { hour:'2-digit', minute:'2-digit' }) : ''; }
   function flashTitle(n)       { document.title = `(${n}) ${document.title.replace(/^\(\d+\) /, '')}`; }
   function statusLabel(s)      { return ({ pending:'Afventer', approved:'Godkendt', asked:'Stillet', rejected:'Afvist', hidden:'Skjult' })[s] || s; }
+  function escHtml(s)          { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 })();
