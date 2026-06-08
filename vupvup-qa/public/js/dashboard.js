@@ -580,6 +580,143 @@
     });
   }
 
+  // ─── Scene management ────────────────────────────────────────────────────────
+  const sceneList        = document.getElementById('vv-scene-list');
+  const sceneError       = document.getElementById('vv-scene-error');
+  const addSceneForm     = document.getElementById('vv-add-scene-form');
+  const addSceneBtn      = document.getElementById('vv-add-scene-btn');
+
+  if (sceneList && d.eventId && d.canManageScenes) {
+    loadScenes();
+  }
+
+  if (addSceneForm) {
+    addSceneForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      hideEl(sceneError);
+      addSceneBtn.disabled = true;
+      addSceneBtn.textContent = 'Opretter…';
+
+      const name  = document.getElementById('vv-scene-name').value.trim();
+      const email = document.getElementById('vv-facilitator-email').value.trim();
+      if (!name) {
+        showError(sceneError, 'Scenens navn er påkrævet.');
+        addSceneBtn.disabled = false;
+        addSceneBtn.textContent = '+ Opret scene';
+        return;
+      }
+
+      try {
+        const body = { name };
+        if (email) body.facilitator_email = email;
+        const res  = await fetch(`${d.restUrl}/events/${d.eventId}/scenes`, {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': d.nonce },
+          body:    JSON.stringify(body),
+        });
+        const json = await res.json();
+        if (res.ok) {
+          document.getElementById('vv-scene-name').value       = '';
+          document.getElementById('vv-facilitator-email').value = '';
+          renderScene(json);
+        } else {
+          showError(sceneError, json.message || 'Noget gik galt.');
+        }
+      } catch { showError(sceneError, 'Netværksfejl. Prøv igen.'); }
+      addSceneBtn.disabled = false;
+      addSceneBtn.textContent = '+ Opret scene';
+    });
+  }
+
+  async function loadScenes() {
+    try {
+      const res    = await fetch(`${d.restUrl}/events/${d.eventId}/scenes`, { headers: { 'X-WP-Nonce': d.nonce } });
+      const scenes = await res.json();
+      if (!Array.isArray(scenes)) return;
+      sceneList.innerHTML = scenes.length === 0
+        ? '<p class="vv-muted">Ingen scener endnu.</p>'
+        : '';
+      scenes.forEach(renderScene);
+    } catch {}
+  }
+
+  function renderScene(scene) {
+    const placeholder = sceneList && sceneList.querySelector('.vv-muted');
+    if (placeholder) placeholder.remove();
+    const row = document.createElement('div');
+    row.className = 'vv-scene-row';
+    row.dataset.sceneId = scene.id;
+    row.innerHTML = `
+      <span class="vv-scene-name">${escHtml(scene.name)}</span>
+      <span class="vv-scene-fac">${scene.facilitator_name ? escHtml(scene.facilitator_name) : '<em>Ingen facilitator</em>'}</span>
+      <a href="${escHtml(scene.dashboard_url)}" class="vupvup-btn vupvup-btn-ghost vupvup-btn-sm" target="_blank">Åbn ↗</a>
+      <button class="vupvup-btn vupvup-btn-danger vupvup-btn-sm vv-del-scene">Slet</button>`;
+    row.querySelector('.vv-del-scene').addEventListener('click', () => deleteScene(scene.id, row));
+    if (sceneList) sceneList.appendChild(row);
+  }
+
+  async function deleteScene(sceneId, row) {
+    if (!confirm('Er du sikker på, at du vil slette denne scene?')) return;
+    try {
+      const res = await fetch(`${d.restUrl}/scenes/${sceneId}`, {
+        method: 'DELETE', headers: { 'X-WP-Nonce': d.nonce },
+      });
+      if (res.ok) {
+        row.remove();
+        if (sceneList && !sceneList.querySelector('.vv-scene-row')) {
+          sceneList.innerHTML = '<p class="vv-muted">Ingen scener endnu.</p>';
+        }
+      }
+    } catch { alert('Fejl. Prøv igen.'); }
+  }
+
+  // ─── Facilitator creation ─────────────────────────────────────────────────────
+  const addFacForm  = document.getElementById('vv-add-facilitator-form');
+  const addFacBtn   = document.getElementById('vv-add-facilitator-btn');
+  const facError    = document.getElementById('vv-facilitator-error');
+  const facSuccess  = document.getElementById('vv-facilitator-success');
+
+  if (addFacForm) {
+    addFacForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      hideEl(facError); hideEl(facSuccess);
+      addFacBtn.disabled = true;
+      addFacBtn.textContent = 'Opretter…';
+
+      const first = document.getElementById('vv-fac-first').value.trim();
+      const last  = document.getElementById('vv-fac-last').value.trim();
+      const email = document.getElementById('vv-fac-email').value.trim();
+      const pass  = document.getElementById('vv-fac-pass').value;
+
+      if (!first || !email || !pass) {
+        showError(facError, 'Fornavn, e-mail og adgangskode er påkrævet.');
+        addFacBtn.disabled = false;
+        addFacBtn.textContent = '+ Opret facilitator';
+        return;
+      }
+
+      try {
+        const res  = await fetch(`${d.restUrl}/facilitators`, {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': d.nonce },
+          body:    JSON.stringify({ first_name: first, last_name: last, email, password: pass }),
+        });
+        const json = await res.json();
+        if (res.ok) {
+          addFacForm.reset();
+          if (facSuccess) {
+            facSuccess.textContent = `Facilitator "${json.display_name}" (${json.email}) er oprettet.`;
+            facSuccess.classList.remove('vupvup-hidden');
+          }
+        } else {
+          showError(facError, json.message || 'Noget gik galt.');
+        }
+      } catch { showError(facError, 'Netværksfejl. Prøv igen.'); }
+      addFacBtn.disabled = false;
+      addFacBtn.textContent = '+ Opret facilitator';
+    });
+  }
+
   // ─── Helpers ─────────────────────────────────────────────────────────────────
   async function post(url, body) {
     return fetch(url, {
