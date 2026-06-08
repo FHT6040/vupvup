@@ -467,8 +467,11 @@
 
     async function updateStats() {
       try {
+        const statsBase = d.sceneId
+          ? `${d.restUrl}/scenes/${d.sceneId}/questions`
+          : `${d.restUrl}/events/${d.eventId}/questions`;
         const res = await fetch(
-          `${d.restUrl}/events/${d.eventId}/questions?status=all&orderby=newest`,
+          `${statsBase}?status=all&orderby=newest`,
           { headers: { 'X-WP-Nonce': d.nonce } }
         );
         const qs = await res.json();
