@@ -87,7 +87,7 @@ class VupVup_QA_Roles {
             return $show;
         }
         $user = wp_get_current_user();
-        $vupvup_roles = [ 'event_facilitator', 'event_participant' ];
+        $vupvup_roles = [ 'event_facilitator', 'event_organizer', 'event_participant' ];
         if ( ! empty( array_intersect( $vupvup_roles, (array) $user->roles ) ) ) {
             return false;
         }
