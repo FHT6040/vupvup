@@ -138,6 +138,40 @@ class VupVup_QA_Frontend {
         include VUPVUP_QA_DIR . 'public/templates/dashboard-event-new.php';
     }
 
+    private function render_scene_live(): void {
+        global $wpdb;
+        $this->require_login();
+
+        $scene_id = (int) get_query_var( 'vupvup_scene_id' );
+        if ( ! $scene_id ) { wp_redirect( home_url( 'dashboard/' ) ); exit; }
+
+        $scene = $wpdb->get_row( $wpdb->prepare(
+            "SELECT * FROM {$wpdb->prefix}vupvup_scenes WHERE id = %d",
+            $scene_id
+        ) );
+        if ( ! $scene ) { wp_redirect( home_url( 'dashboard/' ) ); exit; }
+
+        $event_id = (int) $scene->event_id;
+        $user_id  = get_current_user_id();
+
+        $is_admin       = current_user_can( 'vupvup_manage_all_events' );
+        $is_organizer   = current_user_can( 'vupvup_manage_scenes' )
+                          && (int) get_post_meta( $event_id, '_vupvup_facilitator_id', true ) === $user_id;
+        $is_facilitator = (int) $scene->facilitator_id === $user_id;
+
+        if ( ! $is_admin && ! $is_organizer && ! $is_facilitator ) {
+            wp_redirect( home_url( 'dashboard/' ) ); exit;
+        }
+
+        $event        = get_post( $event_id );
+        $event_status = get_post_meta( $event_id, '_vupvup_event_status', true ) ?: 'draft';
+        $landing      = $scene->token ? home_url( 'qa/' . $scene->token . '/' ) : '';
+        $qr_url       = $scene->qr_url ?: '';
+
+        $this->enqueue_dashboard_assets( $event_id, $scene_id );
+        include VUPVUP_QA_DIR . 'public/templates/dashboard-scene-live.php';
+    }
+
     private function render_event_live(): void {
         $this->require_login();
         $event_id = (int) get_query_var( 'vupvup_event_id' );
