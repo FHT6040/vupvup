@@ -125,6 +125,50 @@ class VupVup_QA_REST_API {
             ],
         ] );
 
+        // Scene CRUD (organizer/admin only).
+        register_rest_route( self::NS, '/events/(?P<event_id>\d+)/scenes', [
+            [
+                'methods'             => 'GET',
+                'callback'            => [ $this, 'get_scenes' ],
+                'permission_callback' => [ $this, 'can_moderate' ],
+                'args'                => [
+                    'event_id' => [ 'type' => 'integer', 'required' => true ],
+                ],
+            ],
+            [
+                'methods'             => 'POST',
+                'callback'            => [ $this, 'create_scene' ],
+                'permission_callback' => [ $this, 'can_moderate' ],
+                'args'                => [
+                    'event_id'          => [ 'type' => 'integer', 'required' => true ],
+                    'name'              => [ 'type' => 'string',  'required' => true,  'sanitize_callback' => 'sanitize_text_field' ],
+                    'facilitator_email' => [ 'type' => 'string',  'required' => false, 'sanitize_callback' => 'sanitize_email' ],
+                ],
+            ],
+        ] );
+
+        register_rest_route( self::NS, '/scenes/(?P<scene_id>\d+)', [
+            'methods'             => 'DELETE',
+            'callback'            => [ $this, 'delete_scene' ],
+            'permission_callback' => [ $this, 'can_delete_scene' ],
+            'args'                => [
+                'scene_id' => [ 'type' => 'integer', 'required' => true ],
+            ],
+        ] );
+
+        // Create facilitator account (organizer/admin only).
+        register_rest_route( self::NS, '/facilitators', [
+            'methods'             => 'POST',
+            'callback'            => [ $this, 'create_facilitator' ],
+            'permission_callback' => [ $this, 'can_manage_facilitators' ],
+            'args'                => [
+                'first_name' => [ 'type' => 'string', 'required' => true,  'sanitize_callback' => 'sanitize_text_field' ],
+                'last_name'  => [ 'type' => 'string', 'required' => false, 'sanitize_callback' => 'sanitize_text_field' ],
+                'email'      => [ 'type' => 'string', 'required' => true,  'sanitize_callback' => 'sanitize_email' ],
+                'password'   => [ 'type' => 'string', 'required' => true ],
+            ],
+        ] );
+
         // Get/set active speaker slot (facilitator write, public read).
         register_rest_route( self::NS, '/events/(?P<event_id>\d+)/active-slot', [
             [
