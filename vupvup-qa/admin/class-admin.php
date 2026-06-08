@@ -88,6 +88,7 @@ class VupVup_QA_Admin {
     }
 
     public function handle_new_event_form(): void {
+        global $wpdb;
         if ( ! current_user_can( 'vupvup_manage_all_events' ) ) {
             wp_die( esc_html__( 'Adgang nægtet.', 'vupvup-qa' ) );
         }
