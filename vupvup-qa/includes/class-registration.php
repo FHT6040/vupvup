@@ -22,6 +22,19 @@ class VupVup_QA_Registration {
             ],
         ] );
 
+        register_rest_route( 'vupvup-qa/v1', '/register/organizer', [
+            'methods'             => 'POST',
+            'callback'            => [ $this, 'handle_register_organizer' ],
+            'permission_callback' => '__return_true',
+            'args'                => [
+                'first_name' => [ 'type' => 'string', 'required' => true,  'sanitize_callback' => 'sanitize_text_field' ],
+                'last_name'  => [ 'type' => 'string', 'required' => false, 'sanitize_callback' => 'sanitize_text_field' ],
+                'email'      => [ 'type' => 'string', 'required' => true,  'sanitize_callback' => 'sanitize_email' ],
+                'password'   => [ 'type' => 'string', 'required' => true ],
+                'company'    => [ 'type' => 'string', 'required' => false, 'sanitize_callback' => 'sanitize_text_field' ],
+            ],
+        ] );
+
         register_rest_route( 'vupvup-qa/v1', '/login', [
             'methods'             => 'POST',
             'callback'            => [ $this, 'handle_login' ],
