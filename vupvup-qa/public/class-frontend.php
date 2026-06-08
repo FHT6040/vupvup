@@ -61,6 +61,7 @@ class VupVup_QA_Frontend {
         match ( $page ) {
             'register'            => $this->render_register(),
             'register-organizer'  => $this->render_register_organizer(),
+            'scene-live'          => $this->render_scene_live(),
             'login'      => $this->render_login(),
             'verify'     => $this->render_verify(),
             'dashboard'  => $this->render_dashboard_home(),
