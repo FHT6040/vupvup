@@ -381,12 +381,13 @@ class VupVup_QA_Frontend {
             ? array_values( array_filter( array_map( 'trim', explode( "\n", $speakers_raw ) ) ) )
             : [];
         wp_localize_script( 'vupvup-dashboard', 'vupvupDash', [
-            'restUrl'  => rest_url( 'vupvup-qa/v1' ),
-            'nonce'    => wp_create_nonce( 'wp_rest' ),
-            'ajaxUrl'  => admin_url( 'admin-ajax.php' ),
-            'eventId'  => $event_id,
-            'sceneId'  => $scene_id,
-            'speakers' => $speakers,
+            'restUrl'         => rest_url( 'vupvup-qa/v1' ),
+            'nonce'           => wp_create_nonce( 'wp_rest' ),
+            'ajaxUrl'         => admin_url( 'admin-ajax.php' ),
+            'eventId'         => $event_id,
+            'sceneId'         => $scene_id,
+            'speakers'        => $speakers,
+            'canManageScenes' => current_user_can( 'vupvup_manage_scenes' ) || current_user_can( 'vupvup_manage_all_events' ),
         ] );
     }
 
