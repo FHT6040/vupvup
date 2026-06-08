@@ -55,7 +55,8 @@ class VupVup_QA_Frontend {
         if ( ! $page ) return;
 
         match ( $page ) {
-            'register'   => $this->render_register(),
+            'register'            => $this->render_register(),
+            'register-organizer'  => $this->render_register_organizer(),
             'login'      => $this->render_login(),
             'verify'     => $this->render_verify(),
             'dashboard'  => $this->render_dashboard_home(),
