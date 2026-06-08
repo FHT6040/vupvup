@@ -61,6 +61,19 @@ class VupVup_QA_REST_API {
             ],
         ] );
 
+        // List questions for a scene (scene facilitator).
+        register_rest_route( self::NS, '/scenes/(?P<scene_id>\d+)/questions', [
+            'methods'             => 'GET',
+            'callback'            => [ $this, 'get_scene_questions' ],
+            'permission_callback' => [ $this, 'can_moderate_scene' ],
+            'args'                => [
+                'scene_id' => [ 'type' => 'integer', 'required' => true ],
+                'status'   => [ 'type' => 'string',  'required' => false, 'default' => 'all' ],
+                'orderby'  => [ 'type' => 'string',  'required' => false, 'default' => 'newest' ],
+                'since_id' => [ 'type' => 'integer', 'required' => false, 'default' => 0 ],
+            ],
+        ] );
+
         // Get event info (public, used by frontend).
         register_rest_route( self::NS, '/events/(?P<event_id>\d+)', [
             'methods'             => 'GET',
